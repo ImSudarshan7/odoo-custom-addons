@@ -6,3 +6,4 @@ class MrpProduction(models.Model):
     date_planned_start = fields.Datetime(string='Production Date')
     number_of_labours = fields.Integer(string='Men Hours', required=True)
     bleached = fields.Boolean(string='Is Bleached')
+#This is change in the module
