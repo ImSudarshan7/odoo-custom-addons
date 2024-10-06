@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <template id="report_manufacturing_order_reports">
+            <t t-call="CRMIC_PROD.external_layout_manufacturing">
+                <t t-foreach="docs" t-as="doc">
+                    <main>
+                        <style>
+                            .table {
+                            width: 100%;
+                            margin-bottom: 1rem;
+                            color: #0A0A0A;
+                            border-collapse: collapse;
+                            font-size: 14px;
+                            }
+                            .table-bordered {
+                            border: 1px solid #0A0A0A;
+                            }
+                            .table-bordered th, .table-bordered td {
+                            border: 1px solid #0A0A0A;
+                            padding: 5px;
+                            }
+                            .table-condensed th, .table-condensed td {
+                            padding: 5px;
+                            }
+                            .full-width-table {
+                            width: 100%;
+                            border-collapse: collapse;
+                            }
+                            .half-width {
+                            width: 50%;
+                            vertical-align: top;
+                            }
+                            .signature {
+                            float: left;
+                            text-align: left;
+                            margin-top: 20px;
+
+                            }
+                            .signature div {
+                            border-bottom: 1px solid black;
+                            width: 150px;
+                            margin-top: 10px;
+                            float: left;
+                            }
+                        </style>
+
+                        <div style="text-align: center; font-size:25px;  margin-bottom: 10px;">
+
+                            <strong>
+                                Manufacturing Report
+                            </strong>
+                        </div>
+
+                        <br/>
+                        <br/>
+                        <!-- Table with two columns -->
+                        <table class="full-width-table">
+                            <tr>
+                                <td class="half-width">
+                                    <div>
+                                        <p>
+                                            <strong>Production Number:</strong>
+                                            <t t-if="doc.name">
+                                                <t t-esc="doc.name"/>
+                                            </t>
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <p>
+                                            <strong>Created Date:</strong>
+                                            <span t-field="doc.create_date" t-options='{"format": "y-MM-dd"}'/>
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <p>
+                                            <strong>Finished Product:</strong>
+                                            <t t-if="doc.product_id">
+                                                <t t-esc="doc.product_id.name"/>
+                                            </t>
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <p>
+                                            <strong>Responsible:</strong>
+                                            <t t-if="doc.user_id">
+                                                <t t-esc="doc.user_id.name"/>
+                                            </t>
+                                        </p>
+                                    </div>
+
+                                </td>
+
+                                <!-- Right side -->
+                                <td class="half-width">
+
+                                    <div>
+                                        <p>
+                                            <strong>Lot/Serial Number:</strong>
+                                            <t t-if="doc.lot_producing_id">
+                                                <t t-esc="doc.lot_producing_id.name"/>
+                                            </t>
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <p>
+                                            <strong>Production Date:</strong>
+                                            <t t-if="doc.date_planned_start">
+                                                <span t-field="doc.date_planned_start"
+                                                      t-options='{"format": "y-MM-dd"}'/>
+                                            </t>
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <p>
+                                            <strong>Production Quantity:</strong>
+                                            <t t-if="doc.product_qty">
+                                                <t t-esc="doc.product_qty"/>
+                                                <t t-esc="doc.product_uom_id.name"/>
+                                            </t>
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <p>
+                                            <strong>Is Bleached:</strong>
+                                            <input type="checkbox" t-att-checked="doc.bleached and 'checked' or None" disabled="disabled"/>
+                                        </p>
+                                    </div>
+<!--                                    <div t-if="doc.bleached">-->
+<!--                                        <p>-->
+<!--                                            <strong>Is Bleached:</strong>-->
+<!--                                            <t t-esc="doc.bleached"/>-->
+<!--                                        </p>-->
+<!--                                    </div>-->
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- Consumed Products -->
+                        <div>
+                            <p>
+                                <strong>Consumed Products</strong>
+                            </p>
+                            <table class="table table-bordered table-condensed">
+                                <tr>
+                                    <th width="2%">S.N.</th>
+                                    <th width="30%">PRODUCTS</th>
+                                    <th width="10%">QUANTITY</th>
+                                </tr>
+                                <t t-set="index" t-value="0"/>
+                                <t t-set="total_quantity" t-value="0"/>
+
+                                <tr t-foreach="doc.move_raw_ids" t-as="l">
+                                    <t t-set="index" t-value="index + 1"/>
+                                    <td width="2%">
+                                        <t t-esc="index"/>
+                                    </td>
+                                    <td width="30%">
+                                        <t t-esc="l.product_id.name"/>
+                                    </td>
+                                    <td width="10%">
+                                        <t t-esc="l.product_uom_qty"/>
+                                        <t t-esc="l.product_uom.name"/>
+                                    </td>
+                                    <t t-set="total_quantity" t-value="total_quantity + l.product_uom_qty"/>
+                                </tr>
+
+                                <tr>
+                                    <td>
+
+                                    </td>
+
+                                    <td style="text-align: right;">
+                                        <strong>Total Quantity</strong>
+
+                                    </td>
+                                    <td style="text-align: left;">
+                                        <t t-esc="total_quantity"/>
+                                        <t t-esc="l.product_uom.name"/>
+                                    </td>
+                                </tr>
+                            </table>
+
+                        </div>
+                        <br/>
+                        <br/>
+                        <!-- Authorized Signature -->
+                        <div class="signature">
+                            <div></div>
+                            <br/>
+                            <p>Authorized Signature</p>
+                        </div>
+                    </main>
+                </t>
+            </t>
+
+        </template>
+    </data>
+</odoo>

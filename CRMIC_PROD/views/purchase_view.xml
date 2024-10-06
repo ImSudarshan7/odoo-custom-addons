@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="purchase.purchase_rfq" model="ir.actions.act_window">
+        <field name="name">Purchase Orders</field>
+    </record>
+    <data>
+        <!-- Inherit the Purchase Order form view -->
+        <record id="view_purchase_order_form_inherit_no_rfq" model="ir.ui.view">
+            <field name="name">purchase.order.form.inherit.no.rfq</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <!-- Hide the 'Send by Email' button when in draft state -->
+                <xpath expr="//button[@name='action_rfq_send'][@states='draft']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+                <!-- Hide the 'Re-Send by Email' button when in sent state -->
+                <xpath expr="//button[@name='action_rfq_send'][@states='sent']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+                <!-- Hide the 'Print RFQ' button when in draft state -->
+                <xpath expr="//button[@name='print_quotation'][@states='draft']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+                <!-- Hide the 'Print RFQ' button when in sent state -->
+                <xpath expr="//button[@name='print_quotation'][@states='sent']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+                <!-- Hide 'Send PO by Email' button -->
+                <xpath expr="//button[@name='action_rfq_send'][@states='purchase']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='date_order']" position="replace">
+                    <field name="date_order" string="Order Date"/>
+                </xpath>
+                <xpath expr="//field[@name='date_approve']" position="attributes">
+                    <attribute name="string">Due Date</attribute>
+                </xpath>
+                <xpath expr="//field[@name='date_planned']" position="attributes">
+                    <attribute name="string">Purchase Date</attribute>
+                </xpath>
+            </field>
+        </record>
+    </data>
+    <data>
+        <!-- Inherit the Purchase Order form view -->
+        <record id="view_purchase_order_form_inherit" model="ir.ui.view">
+            <field name="name">purchase.order.form.inherit.custom</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+
+                <!-- Hide Vendor Reference field -->
+                <xpath expr="//field[@name='partner_ref']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+                <!-- Hide Fiscal Position field -->
+                <xpath expr="//field[@name='fiscal_position_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+     <data>
+        <!-- Inherit the existing purchase order form view -->
+        <record id="view_order_form_custom" model="ir.ui.view">
+            <field name="name">purchase.order.form.custom.title</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//div[@class='oe_title']" position="replace">
+                    <div class="oe_title">
+
+                        <span class="o_form_label" attrs="{'invisible': [('state', 'not in', ('draft', 'sent'))]}">Purchase Order</span>
+
+                        <span class="o_form_label" attrs="{'invisible': [('state', 'in', ('draft', 'sent'))]}">Purchase Order</span>
+                        <h1>
+                            <field name="priority" widget="priority" class="mr-3"/>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
