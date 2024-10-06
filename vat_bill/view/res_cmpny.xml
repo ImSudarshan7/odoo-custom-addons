@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_company_res_form_inherit" model="ir.ui.view">
+            <field name="name">res.company.common.form.inherit</field>
+            <field name="model">res.company</field>
+            <field name="inherit_id" ref="base.view_company_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='social_media']" position="before">
+                    <group string="IRD INTEGRATION" name="ird_intreg" groups="base.group_no_one">
+                        <field name="ird_integ"/>
+                        <field name="ird_user" attrs="{'required': [('ird_integ','!=', False)]}"/>
+                        <field name="ird_password" password="true" attrs="{'required': [('ird_integ','!=', False)]}"/>
+                        <field name="fy_start" attrs="{'required': [('ird_integ','!=', False)]}"/>
+                        <field name="fy_end" attrs="{'required': [('ird_integ','!=', False)]}"/>
+                        <field name="fy_prefix" attrs="{'required': [('ird_integ','!=', False)]}"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>
+
+
+                
+                  

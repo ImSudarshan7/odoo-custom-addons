@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_joborder_summary,joborder.summary,model_joborder_summary,,1,1,1,1
+
+

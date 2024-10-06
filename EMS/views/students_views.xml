@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Tree View -->
+    <record id="view_students_tree" model="ir.ui.view">
+        <field name="name">students.tree</field>
+        <field name="model">students.students</field>
+        <field name="arch" type="xml">
+            <tree string="Students">
+                <field name="first_name"/>
+                <field name="last_name"/>
+                <field name="roll_no"/>
+                <field name="class_id"/>
+                <field name="school_id"/>
+                <field name="birth_date"/>
+                <field name="age"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_students_form" model="ir.ui.view">
+        <field name="name">students.form</field>
+        <field name="model">students.students</field>
+        <field name="arch" type="xml">
+            <form create="1" delete="1" edit="1">
+                <sheet>
+                    <field name="image" widget="image" class="oe_avatar"/>
+
+                    <group>
+                        <group>
+                            <p style="font-size:15px; color:blue">
+                                <strong>
+                                      Personal Information
+                                </strong>
+
+                            </p>
+                            <field name="first_name"/>
+                            <field name="last_name"/>
+                            <field name="school_id"/>
+                    </group>
+                    <group>
+                           <p style="font-size:15px; color:blue">
+                                <strong>
+                                      Class Information
+                                </strong>
+
+                            </p>
+                        <field name="roll_no"/>
+                        <field name="class_id"/>
+                        <field name="medium_id"/>
+
+                    </group>
+                    </group>
+                    <notebook>
+                        <page string="General Information" name="general_information">
+                          <group>
+                              <group>
+                                     <p style="font-size:15px; color:blue;">
+                                <strong>
+                                      General Information
+                                </strong>
+                            </p>
+                              <field name="birth_date" string="Date of Birth"/>
+                            <field name="age" string="Age"/>
+                          </group>
+                          </group>
+
+
+                        </page>
+                        <page string="Parents Details" name="parents_details">
+
+                        </page>
+                    </notebook>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_students" model="ir.actions.act_window">
+        <field name="name">Students</field>
+        <field name="res_model">students.students</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_students_tree"/>
+    </record>
+
+  <!-- Sub Menu Item under 'Students' for students -->
+            <menuitem id="menu_students_details"
+              name="Student Profiles"
+              parent="menu_students"
+              action="action_students"
+              sequence="2"/>
+
+</odoo>

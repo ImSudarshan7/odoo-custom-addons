@@ -1,0 +1,20 @@
+{
+    'name': "EMS",
+    'version': "1.0",
+    'summary': "Student profile management",
+    'description': "Module for managing student profiles.",
+    'author': "Sudarshan",
+    'company': "CRMIC",
+    'sequence': 10,
+    'depends': ['base'],
+    'data': [
+        'security/ir.model.access.csv',
+        'views/students_views.xml',
+        'views/school_class_views.xml',
+        'views/school_name_views.xml',
+        'views/menu.xml',
+    ],
+    'installable': True,
+    'auto_install': False,
+    'application': True,
+}

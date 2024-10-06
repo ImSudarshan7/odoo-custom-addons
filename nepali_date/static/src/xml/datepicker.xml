@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<templates xml:space="preserve">
+  <t t-name="web.datepicker">
+    <t t-set="placeholder" t-value="widget.getParent().node and widget.getParent().node.attrs.placeholder"/>
+    <t t-set="datepickerID" t-value="_.uniqueId('datepicker')"/>
+    <t t-set="datepickerBSID" t-value="_.uniqueId('datepicker')"/>
+
+    <div class="o_datepicker nd_datepickers_container" aria-atomic="true" t-att-id="datepickerID" data-target-input="nearest">
+        <div class="nd_datepicker_ad nd_datepicker_multi" t-attf-hidden="#{!widget.get('ad_mode') and 'hidden' or None}">
+          <input type="text"
+            class="o_datepicker_input o_input datetimepicker-input"
+            autocomplete="off"
+            t-att-name="widget.name"
+            t-att-placeholder="placeholder"
+            t-attf-data-target="##{datepickerID}"
+            data-date-mode="ad"/>
+          <span class="o_datepicker_button"/>
+          <span class="nd_switch_btn" title="Switch to Nepali Calendar" />
+          <span class="nd_alt_date" />
+        </div>
+
+        <div class="nd_datepicker_bs nd_datepicker_multi" aria-atomic="true" t-att-id="datepickerBSID" data-target-input="nearest" t-attf-hidden="#{widget.get('ad_mode') and 'hidden' or None}">
+          <input type="text"
+              class="o_datepicker_input o_input nd_datepicker_input_bs"
+              autocomplete="off"
+              t-attf-name="#{widget.name}_bs"
+              t-att-placeholder="'B.S'"
+              t-attf-data-target="##{datepickerBSID}"
+              data-date-mode="bs"
+              />
+          <span class="o_datepicker_button"/>
+          <span class="nd_switch_btn" title="Switch to Gregorian Calendar" />
+          <span class="nd_alt_date" />
+        </div>
+    </div>
+  </t>
+</templates>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Tree View -->
+    <record id="view_school_name_tree" model="ir.ui.view">
+        <field name="name">school_name.tree</field>
+        <field name="model">school.name</field>
+        <field name="arch" type="xml">
+            <tree string="School">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_school_name_form" model="ir.ui.view">
+        <field name="name">school_name.form</field>
+        <field name="model">school.name</field>
+        <field name="arch" type="xml">
+            <form string="School">
+                <sheet>
+                    <group>
+                         <group>
+                        <field name="name"/>
+                    </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_school_name" model="ir.actions.act_window">
+        <field name="name">School Name</field>
+        <field name="res_model">school.name</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_school_name_tree"/>
+    </record>
+            <!-- Sub Menu Item under 'EMS' for Classes -->
+<menuitem id="menu_school_name"
+              name="School Name"
+              parent="menu_students_root"
+              action="action_school_name"
+              sequence="2"/>
+</odoo>

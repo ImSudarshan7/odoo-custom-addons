@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+	    <!-- Nepali Datepicker Assets -->
+		<template id="assets_backend" name="Nepali Datepicker Assets">
+	        <xpath expr="." position="inside">
+	            <link rel="stylesheet" href="/nepali_datepicker_mu/static/src/css/nepali_date_widget.css"></link>
+	            <link rel="stylesheet" href="/nepali_datepicker_mu/static/src/lib/nepali_date_widget/jquery.calendars.picker.css"></link>
+	            <script type="text/javascript" src="/nepali_datepicker_mu/static/src/lib/nepali_date_widget/jquery.plugin.js"></script>
+	            <script type="text/javascript" src="/nepali_datepicker_mu/static/src/lib/nepali_date_widget/jquery.calendars.js"></script>
+	            <script type="text/javascript" src="/nepali_datepicker_mu/static/src/lib/nepali_date_widget/jquery.calendars.plus.js"></script>
+	            <script type="text/javascript" src="/nepali_datepicker_mu/static/src/lib/nepali_date_widget/jquery.calendars.picker.js"></script>
+	            <script type="text/javascript" src="/nepali_datepicker_mu/static/src/lib/nepali_date_widget/jquery.calendars.nepali.js"></script>
+	            <script type="text/javascript" src="/nepali_datepicker_mu/static/src/js/nepali_date_widget.js"></script>
+	        </xpath>
+	    </template>
+	</data>
+</odoo>

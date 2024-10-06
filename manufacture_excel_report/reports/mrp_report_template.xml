@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <report
+            id="report_manufacturing_order_xls"
+            string="Print Manufacturing Excels"
+            model="mrp.production"
+            report_type="xlsx"
+            file="manufacture_excel_report.report_manufacturing_order_xls"
+            name="manufacture_excel_report.report_manufacturing_order_xls"
+
+    />
+</odoo>

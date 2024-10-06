@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report id="account.account_invoice_vat"
+                model="account.move"
+                string="VAT Invoice"
+                report_type="qweb-pdf"
+                name="vat_bill.report_invoice_vat"
+                file="vat_bill.report_invoice_vat"
+        />
+    </data>
+</odoo>

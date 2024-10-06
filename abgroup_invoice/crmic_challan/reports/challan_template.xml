@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <template id="report_challan_report">
+            <t t-call="crmic_challan.external_layout_challan">
+                <t t-foreach="docs" t-as="doc">
+                    <main>
+                        <style>
+                            .table { width: 100%; margin-bottom: 1rem; color: #0A0A0A; border-collapse: collapse;
+                            font-size:14px; }
+                            .table-bordered { border: 1px solid #0A0A0A; }
+                            .table-bordered th, .table-bordered td {border: 1px solid #0A0A0A; padding: 5px; }
+                            .table-condensed th, .table-condensed td { padding: 5px; }
+                        </style>
+                        <div class="page">
+                            <center>
+                                <h1>
+                                    Delivery Challan
+                                </h1>
+                            </center>
+                            <div>
+                                <table width="100%">
+                                    <tr>
+                                        <td width="15%" align="left">
+                                            <b>Challan no:</b>
+                                        </td>
+                                        <td width="55%" align="left">
+                                            <t t-esc="doc.challan_no"/>
+                                        </td>
+                                        <td width="15%" align="right">
+                                            <b>Challan Date:</b>
+                                        </td>
+                                        <td width="15%" align="left">
+                                            <t t-esc="doc.challan_date"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <div class="row">
+                                <div style="float: left; width:40%;  margin-right:10%;">
+                                    <table class="table table-bordered table-condensed" align="left">
+                                        <tr>
+                                            <td width="50%">
+                                                <b>Transportation Mode :</b>
+                                            </td>
+                                            <td>
+                                                <t t-esc="doc.transportation_mode"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td width="50%">
+                                                <b>Vehicle No. :</b>
+                                            </td>
+                                            <td>
+                                                <t t-esc="doc.vehicle_no"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td width="50%">
+                                                <b>Vehicle Contact Name :</b>
+                                            </td>
+                                            <td>
+                                                <t t-esc="doc.vehicle_contact_name"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td width="50%">
+                                                <b>Vehicle Contact No. :</b>
+                                            </td>
+                                            <td>
+                                                <t t-esc="doc.vehicle_contact_no"/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+
+                                <div style="float: left; width:40%; margin-left:10%; ">
+                                    <table class="table table-bordered table-condensed;" align="left">
+                                        <tr>
+                                            <td width="60%">
+                                                <b>Delivery Contact Name :</b>
+                                            </td>
+                                            <td>
+                                                <t t-esc="doc.delivery_contact_name"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td width="60%">
+                                                <b>Contact No.:</b>
+                                            </td>
+                                            <td>
+                                                <t t-esc="doc.contact_no"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td width="60%">
+                                                <b>To :</b>
+                                            </td>
+                                            <td>
+                                                <t t-esc="doc.to"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td width="60%">
+                                                <b>Address :</b>
+                                            </td>
+                                            <td>
+                                                <t t-esc="doc.address"/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div>
+
+                                    <table class="table table-bordered table-condensed">
+                                        <tr>
+                                            <td width="2%">
+                                                <b>S.N.</b>
+                                            </td>
+                                            <td width="30%">
+                                                <b>Particular</b>
+                                            </td>
+                                            <td width="10%">
+                                                <b>Unit</b>
+                                            </td>
+                                            <td width="10%">
+                                                <b>Qty</b>
+                                            </td>
+                                            <td width="12%">
+                                                <b>Rate</b>
+                                            </td>
+                                            <td width="12%">
+                                                <b>Amount</b>
+                                            </td>
+                                        </tr>
+                                        <t t-set="index" t-value="0"/>
+                                        <t t-set="total_amount" t-value="0"/>
+                                        <tr t-foreach="doc.move_ids_without_package" t-as="l">
+                                            <t t-set="index" t-value="index + 1"/>
+                                            <t t-set="line_total" t-value="l.price_unit * l.quantity_done"/>
+                                            <t t-set="total_amount" t-value="total_amount + line_total"/>
+
+                                            <td width="2%">
+                                                <t t-esc="index"/>
+                                            </td>
+                                            <td width="30%">
+                                                <t t-esc="l.product_id.display_name"/>
+                                            </td>
+                                            <td width="10%">
+                                                <t t-esc="l.product_uom.name"/>
+                                            </td>
+                                            <td width="10%">
+                                                <t t-esc="l.quantity_done"/>
+                                            </td>
+                                            <td width="12%">
+                                                <!--                                            <span t-field="doc.currency_id.symbol"/>-->
+
+                                                <t t-esc="'{0:,.2f}'.format(l.price_unit)"/>
+                                            </td>
+                                            <td width="12%">
+                                                <!--                                            <span t-field="doc.currency_id.symbol"/>-->
+
+                                                <t t-esc="'{0:,.2f}'.format(line_total)"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4">
+                                                <b>In Words Rs. :</b>
+                                                <span t-esc="doc.amount_to_text(total_amount, 'NPR')"/>
+                                            </td>
+                                            <td>
+                                                Total
+                                            </td>
+                                            <td>
+                                                <!--                                            <span t-field="doc.currency_id.symbol"/>-->
+                                                <t t-esc="'{0:,.2f}'.format(total_amount)"/>
+
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <br/>
+                                <br/>
+                                <table width="100%">
+                                    <tr>
+                                        <td width="30%" align="center">
+                                            <p>___________________</p>
+                                            <b>Approved By</b>
+                                        </td>
+                                        <td width="30%" align="center">
+                                            <p>___________________</p>
+                                            <b>Received By</b>
+                                        </td>
+                                        <td width="30%" align="center">
+                                            <p>___________________</p>
+                                            <b>Prepared By</b>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <!-- Your report content goes here -->
+                        </div>
+                    </main>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

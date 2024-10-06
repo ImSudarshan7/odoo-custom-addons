@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sale_day_book_wizard,access_sale_day_book_wizard,model_sale_day_book_wizard,base.group_user,1,1,1,0
+access_sale_day_book_report_excel,access_sale_day_book_report_excel,model_sale_day_book_report_excel,base.group_user,1,1,1,0
+access_sale_day_book_pivot_report,access_sale_day_book_pivot_report,model_sale_day_book_pivot_report,base.group_user,1,1,1,1

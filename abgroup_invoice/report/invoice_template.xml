@@ -1,0 +1,536 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="invoice_template_report_first">
+            <!--            <template t-call="web.html_container">-->
+            <t t-call="abgroup_invoice.external_layout_invoice">
+                <div class="page">
+                    <div class="row" style="font-size:16px">
+                        <br/>
+                        <style>
+                            .table {
+                            width: 100%;
+                            margin-bottom: 1rem;
+                            color: #212529;
+                            border-collapse: collapse;
+                            font-size: 14px;
+                            }
+
+                            .table-bordered {
+                            border: 1px solid #dee2e6;
+                            }
+
+                            .table-bordered th,
+                            .table-bordered td {
+                            border: 1px solid #dee2e6;
+                            padding: 5px;
+                            <!--                        vertical-align: top;-->
+                            <!--                        text-align: left;-->
+                            }
+
+                            .table-condensed th,
+                            .table-condensed td {
+                            padding: 5px;
+                            }
+
+                        </style>
+                        <center>
+                            <br/>
+                            <h2>
+                                <span t-if="o.move_type == 'out_invoice' and (o.state == 'open' or o.state == 'posted')">
+                                    TAX INVOICE
+                                </span>
+                                <span t-if="o.move_type == 'out_invoice' and o.state == 'draft'">Draft Invoice
+                                </span>
+                                <span t-if="o.move_type == 'out_invoice' and o.state == 'cancel'">Cancelled Invoice
+                                </span>
+                                <span t-if="o.move_type == 'out_refund'">Credit Note</span>
+                            </h2>
+                        </center>
+
+                        <div class="col-xs-12">
+                            <table class="table table-bordered table-condensed">
+                                <tr>
+                                    <td widht="50%" aligh="left">
+                                        BUYER'S NAME :
+                                        <t t-esc="o.partner_id.name"/>
+                                        <br/>
+                                        ADDRESS :
+                                        <t t-esc="o.partner_id.city"/>
+                                        <br/>
+                                        PAN NO :
+                                        <t t-esc="o.partner_id.vat"/>
+                                        <br/>
+                                        VEHICLE NO :
+                                        <t t-esc="o.vehicle_num.vehicle_no"/>
+                                        <br/>
+                                        PRINTED BY:
+                                        <t t-esc="user.name"/>
+                                        <br/>
+                                    </td>
+
+                                    <td width="50%" align="left">
+                                        INVOICE NO. :
+                                        <b>
+                                            <t t-esc="o.name"/>
+                                        </b>
+                                        <br/>
+                                        TRANSACTION DATE :
+                                        <span t-field="o.transcation_date" t-options='{"format": "y-MM-dd"}'/>
+                                        <br/>
+                                        INVOICE DATE :
+                                        <span t-field="o.invoice_date" t-options='{"format": "y-MM-dd"}'/>
+                                        <br/>
+                                        SOURCE NO:
+                                        <t t-esc="o.invoice_origin"/>
+                                        <br/>
+                                        PRINTED ON:
+                                        <t t-esc="datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=5, minutes=45))).strftime('%Y-%m-%d %I:%M:%S %p')"/>
+                                        <br/>
+                                    </td>
+                                </tr>
+                            </table>
+
+
+                            <div class="col-xs-12">
+                                <table class="table table-bordered table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <td width="2%" align="center">
+                                                <b>S.N</b>
+                                            </td>
+                                            <td width="4%" align="center">
+                                                <b>HS Code</b>
+                                            </td>
+                                            <td width="28%">
+                                                <b>Particulars</b>
+                                            </td>
+                                            <td width="24%">
+                                                <b>Description</b>
+                                            </td>
+                                            <td width="8%">
+                                                <b>QTY.</b>
+                                            </td>
+                                            <td width="12%" align="center">
+                                                <b>Rate</b>
+                                            </td>
+                                            <td width="12%" align="center">
+                                                <b>Amount</b>
+                                            </td>
+                                        </tr>
+                                    </thead>
+                                    <tr t-foreach="o.invoice_line_ids" t-as="l">
+                                        <td>
+                                            <t t-esc="l_index+1"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="l.product_id.hs_code"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="l.product_id.product_tmpl_id.name"/>
+                                        </td>
+                                        <td t-if="l.product_id.type=='service'">
+                                            <span t-esc="l.name"/>
+                                        </td>
+                                        <td t-if="l.product_id.type == 'product'">
+                                        </td>
+                                        <td t-if="l.product_id.type == 'service'"/>
+                                        <!--                                            Leave qty field empty for services-->
+                                        <td t-if="l.product_id.type == 'product'">
+                                            <span t-field="l.quantity" t-options='{"widget": "float", "precision": 2}'/>
+                                        </td>
+                                        <td align="right">
+                                            <span t-esc="'{0:,.2f}'.format(l.price_unit)"/>
+                                            <span t-field="o.currency_id.symbol"/>
+
+                                        </td>
+
+                                        <td align="right">
+                                            <span t-esc="'{0:,.2f}'.format(l.dumy_subtotal)"/>
+                                            <span t-field="o.currency_id.symbol"/>
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="5" colspan="4" style="vertical-align: top;">
+
+                                            <b>In Words Rs.</b>
+                                            <span style="border-bottom: 1px dotted"
+                                                  t-esc="o.amount_to_text(o.amount_total, 'NPR')"/>
+
+                                        </td>
+                                        <td colspan="2" align="right">
+                                            <b>Sub Total</b>
+                                        </td>
+                                        <td align="right">
+                                            <span t-esc="'{0:,.2f}'.format(o.amount_untaxed + o.amount_discount)"/>
+                                            <span t-field="o.currency_id.symbol"/>
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" align="right">
+                                            <b>Discount</b>
+                                        </td>
+                                        <td align="right">
+                                            <span t-esc="'{0:,.2f}'.format(o.amount_discount)"/>
+                                            <span t-field="o.currency_id.symbol"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" align="right">
+                                            <b>Taxable Amount</b>
+                                        </td>
+                                        <td align="right">
+                                            <span t-esc="'{0:,.2f}'.format(o.amount_untaxed)"/>
+                                            <span t-field="o.currency_id.symbol"/>
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" align="right">
+                                            <b>13% VAT</b>
+                                        </td>
+                                        <td align="right">
+                                            <span t-esc="'{0:,.2f}'.format(o.amount_tax)"/>
+                                            <span t-field="o.currency_id.symbol"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" align="right">
+                                            <b>GRAND TOTAL</b>
+                                        </td>
+                                        <td align="right">
+                                            <span t-esc="'{0:,.2f}'.format(o.amount_total)"/>
+                                            <span t-field="o.currency_id.symbol"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <br/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+        <!--        </template>-->
+        <!--                                    <div style="page-break-after: always;">-->
+        <!--                                        <br/>-->
+        <!--                                    </div>-->
+        <template id="invoice_template_report_second">
+            <!--             <template t-call="web.html_container">-->
+            <t t-call="abgroup_invoice.external_layout_invoice">
+                <!--                <t t-set="context" t-value="dict(context, page_number=1)"/>-->
+                <div class="page">
+                    <br/>
+                    <style>
+                        .table {
+                        width: 100%;
+                        margin-bottom: 1rem;
+                        color: #212529;
+                        border-collapse: collapse;
+                        font-size: 14px;
+                        }
+
+                        .table-bordered {
+                        border: 1px solid #dee2e6;
+                        }
+
+                        .table-bordered th,
+                        .table-bordered td {
+                        border: 1px solid #dee2e6;
+                        padding: 5px;
+                        <!--                        vertical-align: top;-->
+                        <!--                        text-align: left;-->
+                        }
+
+                        .table-condensed th,
+                        .table-condensed td {
+                        padding: 5px;
+                        }
+                    </style>
+                    <div class="row" style="font-size:16px">
+                        <br/>
+                        <center>
+                            <br/>
+                            <h2>
+                                <span t-if="o.move_type == 'out_invoice' and (o.state == 'open' or o.state == 'posted')">
+                                    INVOICE
+                                </span>
+                                <span t-if="o.move_type == 'out_invoice' and o.state == 'draft'">Draft Invoice
+                                </span>
+                                <span t-if="o.move_type == 'out_invoice' and o.state == 'cancel'">Cancelled
+                                    Invoice
+                                </span>
+                                <span t-if="o.move_type == 'out_refund'">Credit Note</span>
+                            </h2>
+                        </center>
+
+
+                        <div class="col-xs-12">
+                            <table class="table table-bordered table-condensed">
+                                <tr>
+                                    <td widht="50%" aligh="left">
+                                        BUYER'S NAME :
+                                        <t t-esc="o.partner_id.name"/>
+                                        <br/>
+                                        ADDRESS :
+                                        <t t-esc="o.partner_id.city"/>
+                                        <br/>
+                                        PAN NO :
+                                        <t t-esc="o.partner_id.vat"/>
+                                        <br/>
+                                        VEHICLE NO :
+                                        <t t-esc="o.vehicle_num.vehicle_no"/>
+                                        <br/>
+                                        PRINTED BY:
+                                        <t t-esc="user.name"/>
+                                        <br/>
+                                    </td>
+
+                                    <td width="50%" align="left">
+                                        INVOICE NO. :
+                                        <b>
+                                            <t t-esc="o.name"/>
+                                        </b>
+                                        <br/>
+                                        TRANSACTION DATE :
+                                        <span t-field="o.transcation_date" t-options='{"format": "y-MM-dd"}'/>
+                                        <br/>
+                                        INVOICE DATE :
+                                        <span t-field="o.invoice_date" t-options='{"format": "y-MM-dd"}'/>
+                                        <br/>
+                                        SOURCE NO :
+                                        <t t-esc="o.invoice_origin"/>
+                                        <br/>
+                                        PRINTED ON:
+                                        <t t-esc="datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=5, minutes=45))).strftime('%Y-%m-%d %I:%M:%S %p')"/>
+                                        <br/>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <div class="col-xs-12">
+                                <table class="table table-bordered table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <td width="2%" align="center">
+                                                <b>S.N</b>
+                                            </td>
+                                            <td width="4%" align="center">
+                                                <b>HS Code</b>
+                                            </td>
+                                            <td width="28%">
+                                                <b>Particulars</b>
+                                            </td>
+                                            <td width="24%">
+                                                <b>Description</b>
+                                            </td>
+                                            <td width="8%">
+                                                <b>QTY.</b>
+                                            </td>
+                                            <td width="12%" align="center">
+                                                <b>Rate</b>
+                                            </td>
+                                            <td width="12%" align="center">
+                                                <b>Amount</b>
+                                            </td>
+                                        </tr>
+                                    </thead>
+                                    <tr t-foreach="o.invoice_line_ids" t-as="l">
+                                        <td>
+                                            <t t-esc="l_index+1"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="l.product_id.hs_code"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="l.product_id.product_tmpl_id.name"/>
+                                        </td>
+                                        <td t-if="l.product_id.type=='service'">
+                                            <span t-esc="l.name"/>
+                                        </td>
+                                        <td t-if="l.product_id.type == 'product'">
+                                        </td>
+                                        <td t-if="l.product_id.type == 'service'"/>
+                                        <!--                                            Leave qty field empty for services-->
+                                        <td t-if="l.product_id.type == 'product'">
+                                            <span t-field="l.quantity" t-options='{"widget": "float", "precision": 2}'/>
+                                        </td>
+                                        <td align="right">
+                                            <span t-esc="'{0:,.2f}'.format(l.price_unit)"/>
+                                            <span t-field="o.currency_id.symbol"/>
+
+                                        </td>
+
+                                        <td align="right">
+                                            <span t-esc="'{0:,.2f}'.format(l.dumy_subtotal)"/>
+                                            <span t-field="o.currency_id.symbol"/>
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="5" colspan="4" style="vertical-align: top;">
+
+                                            <b>In Words Rs.</b>
+                                            <span style="border-bottom: 1px dotted"
+                                                  t-esc="o.amount_to_text(o.amount_total, 'NPR')"/>
+
+                                        </td>
+                                        <td colspan="2" align="right">
+                                            <b>Sub Total</b>
+                                        </td>
+                                        <td align="right">
+                                            <span t-esc="'{0:,.2f}'.format(o.amount_untaxed + o.amount_discount)"/>
+                                            <span t-field="o.currency_id.symbol"/>
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" align="right">
+                                            <b>Discount</b>
+                                        </td>
+                                        <td align="right">
+                                            <span t-esc="'{0:,.2f}'.format(o.amount_discount)"/>
+                                            <span t-field="o.currency_id.symbol"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" align="right">
+                                            <b>Taxable Amount</b>
+                                        </td>
+                                        <td align="right">
+                                            <span t-esc="'{0:,.2f}'.format(o.amount_untaxed)"/>
+                                            <span t-field="o.currency_id.symbol"/>
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" align="right">
+                                            <b>13% VAT</b>
+                                        </td>
+                                        <td align="right">
+                                            <span t-esc="'{0:,.2f}'.format(o.amount_tax)"/>
+                                            <span t-field="o.currency_id.symbol"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" align="right">
+                                            <b>GRAND TOTAL</b>
+                                        </td>
+                                        <td align="right">
+                                            <span t-esc="'{0:,.2f}'.format(o.amount_total)"/>
+                                            <span t-field="o.currency_id.symbol"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <br/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+        <!--        </template>-->
+
+<!--        <template id="invoice_template_report_id">-->
+<!--            <t t-call="web.html_container">-->
+<!--                <t t-foreach="docs" t-as="o">-->
+<!--                    <t t-if="not o.first_invoice">-->
+<!--                        <span t-if="o.move_type == 'out_refund' or o.state == 'draft'">-->
+<!--                            <t t-call="abgroup_invoice.invoice_template_report_first" t-lang="o.name"/>-->
+<!--                        </span>-->
+<!--                        <span t-else="">-->
+<!--                            <t t-set="invoice_count"-->
+<!--                               t-value="o.run_sql('update account_move set first_invoice = true where id=%s' %o.id)"/>-->
+<!--                            <t t-set="invoice_count"-->
+<!--                               t-value="o.run_sql('update account_move set invoice_count = invoice_count + 1 where id=%s' %o.id)"/>-->
+<!--                            <t t-call="abgroup_invoice.invoice_template_report_first" t-lang="o.name"/>-->
+<!--                            <div style="page-break-after: always;"/>-->
+<!--                            <t t-call="abgroup_invoice.invoice_template_report_second" t-lang="o.name"/>-->
+<!--                        </span>-->
+<!--                    </t>-->
+<!--                    <t t-else="">-->
+<!--                        <t t-set="invoice_count"-->
+<!--                           t-value="o.run_sql('update account_move set invoice_count = invoice_count + 1 where id=%s' %o.id)"/>-->
+<!--                        <t t-call="abgroup_invoice.invoice_report_duplicate_second" t-lang="o.name"/>-->
+<!--                    </t>-->
+<!--                </t>-->
+<!--            </t>-->
+<!--        </template>-->
+        <template id="invoice_template_report_id">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-if="not o.first_invoice">
+                        <span t-if="o.move_type == 'out_refund' or o.state == 'draft'">
+                            <t t-call="abgroup_invoice.invoice_template_report_first" t-lang="o.name"/>
+                        </span>
+                        <span t-else="">
+                            <t t-set="invoice_count"
+                               t-value="o.run_sql('update account_move set first_invoice = true where id=%s' %o.id)"/>
+                            <t t-set="invoice_count"
+                               t-value="o.run_sql('update account_move set invoice_count = invoice_count + 1 where id=%s' %o.id)"/>
+                            <t t-call="abgroup_invoice.invoice_template_report_first" t-lang="o.name"/>
+                            <div style="page-break-after: always;"/>
+                            <t t-call="abgroup_invoice.invoice_template_report_second" t-lang="o.name"/>
+                        </span>
+                    </t>
+                    <t t-else="">
+
+                        <span t-if="o.move_type == 'out_refund' or o.state == 'draft'">
+                            <t t-call="abgroup_invoice.invoice_template_report_first" t-lang="o.name"/>
+                        </span>
+                        <span t-else="">
+
+                        <t t-set="invoice_count"
+                           t-value="o.run_sql('update account_move set invoice_count = invoice_count + 1 where id=%s' %o.id)"/>
+                        <t t-call="abgroup_invoice.invoice_report_duplicate_second" t-lang="o.name"/>
+</span>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+        <template id="invoice_report_duplicate_first" inherit_id="abgroup_invoice.invoice_template_report_first"
+                  primary="True">
+            <xpath expr="//h2" position="replace">
+                <h2>
+                    <span>
+                        <div style="position:absolute;opacity:0.10;z-index:-1;transform:rotate(300deg);-webkit-transform:rotate(300deg);top:240px;text-align:bottom;width:100%;">
+                            <p style="font-size:65px; color:#5d6d7e;">
+                                Copy of Original
+                                <t t-esc="o.invoice_count"/>
+                            </p>
+                        </div>
+                    </span>
+                    <span t-if="o.move_type == 'out_refund'">REFUND</span>
+                    <span t-if="o.move_type == 'out_invoice'">TAX INVOICE</span>
+                </h2>
+            </xpath>
+        </template>
+        <template id="invoice_report_duplicate_second" inherit_id="abgroup_invoice.invoice_template_report_second"
+                  primary="True">
+            <xpath expr="//h2" position="replace">
+                <h2>
+                    <span>
+                        <div style="position:absolute;opacity:1.90;z-index:-1;transform:rotate(300deg);-webkit-transform:rotate(300deg);top:400px;text-align:bottom;width:100%;">
+                            <p style="font-size:65px; color:#5d6d7e;">
+                                Copy of Original
+                                <t t-esc="o.invoice_count"/>
+                            </p>
+                        </div>
+                    </span>
+                    <span t-if="o.move_type == 'out_refund'">REFUND</span>
+                    <span t-if="o.move_type == 'out_invoice'">INVOICE</span>
+                </h2>
+            </xpath>
+        </template>
+        <template id="invoice_report_duplicate_main">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="abgroup_invoice.invoice_report_duplicate_second" t-lang="o.partner_id.lang"/>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

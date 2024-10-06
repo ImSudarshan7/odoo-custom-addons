@@ -1,0 +1,214 @@
+.calendars-popup {
+  z-index: 1500;
+  border: 1px solid $gray-300;
+  padding: $mark-padding;
+  background: $white;
+  border-radius: $border-radius;
+  box-shadow: $dropdown-box-shadow;
+  margin-top: 6px;
+  margin-bottom: 6px;
+}
+
+.calendars{
+  min-width: $nepali_date-width;
+  font-size: $font-size-base;
+  -moz-border-radius: 0;
+  -webkit-border-radius: 0;
+  border-radius: 0;
+  border: 1px solid $white;
+  font-family: $font-family-sans-serif;
+  color: $o-main-text-color;
+
+  &-nav, &-ctrl {
+    font-size: $font-size-base;
+    background-color: $nepali_date-primary;
+  }
+
+  &-ctrl{
+    margin-top: 6px;
+  }
+
+  &-nav {
+    padding-bottom: $mark-padding;
+
+    a.calendars-cmd {
+      height: 2.35em;
+      line-height: 2.35em;
+    }
+
+    .calendars-cmd-today {
+      width: 60%;
+    }
+
+    .calendars-cmd-prev {
+      position: relative;
+      text-align: center;
+      width: 20%;
+      &::after {
+        position: relative;
+        content: '\f053';
+        font-family: 'FontAwesome';
+        display: inline-block;
+        vertical-align: middle;
+      }
+    }
+
+    .calendars-cmd-next {
+      width: 20%;
+      position: relative;
+      text-align: center;
+      &::after {
+        position: relative;
+        content: '\f054';
+        font-family: 'FontAwesome';
+        display: inline-block;
+        vertical-align: middle;
+      }
+    }
+  }
+
+  &-ctrl {
+    background-color: $nepali_date-primary;
+
+    & .calendars-cmd{
+
+      &:hover {
+        background-color: darken($nepali_date-primary, 10%);
+      }
+    }
+
+    a:hover {
+      background-color: darken($nepali_date-primary, 10%);
+    }
+  }
+
+  &-cmd:hover {
+    background-color: darken($nepali_date-primary, 10%);
+  }
+
+  &-month {
+    float:none;
+    border: none;
+    width: $nepali_date-width;
+
+    &-header {
+      width:100%;
+      height: auto;
+      display: -webkit-flex;
+      display: flex;
+      background-color: $nepali_date-primary;
+
+      select {
+        height: auto;
+        -webkit-flex: 1;
+        -ms-flex:1;
+        flex:1;
+        background-color: $nepali_date-primary;
+      }
+    }
+
+    th {
+      border-color: darken($nepali_date-secondary, 10%);
+    }
+
+    th, th a {
+      background-color: darken($nepali_date-secondary, 10%);
+      color: $nepali_date-secondary-text-color;
+    }
+
+    thead {
+      border-color: darken($nepali_date-secondary, 10%);
+    }
+
+    tbody a, tbody span {
+      padding: 0.45em;
+      border-radius: 50%;
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    a {
+      color: $o-main-text-color;
+      background-color: $white;
+    }
+
+    td {
+      border-width: 0;
+      background-color:$white;
+
+      .calendars-selected {
+        background-color: $nepali_date-primary;
+        color: $white;
+      }
+
+      .calendars-weekend:not(.calendars-selected) {
+        background-color: $white;
+      }
+
+      .calendars-highlight:not(.calendars-selected) {
+        background-color: $nepali_date-secondary;
+        color: $o-main-text-color;
+      }
+
+      .calendars-highlight.calendars-today:not(.calendars-selected) {
+        background-color: $nepali_date-secondary;
+        color: $o-main-text-color;
+      }
+
+      .calendars-today:not(.calendars-highlight):not(.calendars-selected) {
+        background-color: transparent;
+        color: $o-main-text-color;
+      }
+
+      .calendars-today {
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+.nd_datepickers_container {
+  position: relative;
+  width: auto;
+  height: auto;
+  display: block;
+  box-sizing: border-box;
+}
+
+.o_datepicker {
+
+  input.o_datepicker_input {
+    padding-right: 50px;
+  }
+
+}
+
+.nd_datepicker_multi {
+  position: relative;
+
+  .nd_switch_btn {
+    @include o-position-absolute($top: 3px, $right: 14px);
+
+    padding-left: 5px;
+    padding-right: 5px;
+    background-color: $gray-200;
+    cursor: pointer;
+
+    &:after {
+      font-family: FontAwesome;
+      content: "\f0ec";
+      border: none;
+      display: inline;
+      color: $primary;
+    }
+  }
+}
+
+.o_datepicker {
+  position: relative;
+
+  .o_datepicker_warning {
+      top: 0;
+      right: 40px;
+  }
+}

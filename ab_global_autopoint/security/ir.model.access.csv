@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_work_order,work.order,model_job_order,,1,1,1,1
+access_work_order_line,work.order.line,model_part_order_lines,,1,1,1,1
+access_vehicle_create,vehicle.create,model_vehicle_create,,1,1,1,1
+access_vehicle_make,vehicle.make,model_vehicle_make,,1,1,1,1
+

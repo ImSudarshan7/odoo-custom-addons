@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+  <template id="assets_backend_custom" name="Nepali calendar backend assets">
+    <xpath expr="." position="inside">
+      <!-- <t t-set="calendar_path" t-value="'/nepali_date/static/lib/jquery.calendars.package-2.1.0'"/>
+      <link rel="stylesheet" t-attf-href="{{calendar_path}}/css/jquery.calendars.picker.css"/>
+       -->
+      <!-- <link rel="stylesheet" href="/nepali_date/static/src/scss/_variables.scss" type="text/scss" />
+      <link rel="stylesheet" href="/nepali_date/static/src/scss/style.scss" type="text/scss" /> -->
+
+      <script type="text/javascript">
+      <t t-set="IRConfig" t-value="request.env['ir.config_parameter'].sudo()" />
+      <t t-set="date_mode" t-value="IRConfig.get_param('nepali_date.default_datepicker') or 'bs'" />
+      <t t-set="date_format" t-value="IRConfig.get_param('nepali_date.date_format') or 'bs'" />
+      <t t-set="report_date_mode" t-value="IRConfig.get_param('nepali_date.report.date_mode') or 'both'" />
+      odoo.define('nepali_date.config', function(require) {
+        var config = {
+          'date_mode': "<t t-esc="date_mode" />",
+          'date_format': "<t t-esc="date_format" />",
+          'report_date_mode': "<t t-esc="report_date_mode" />",
+        };
+
+        return config;
+      });
+      </script>
+
+      <!-- <script t-attf-src="{{calendar_path}}/js/jquery.calendars.js"/>
+      <script t-attf-src="{{calendar_path}}/js/jquery.calendars.plus.js"/>
+      <script t-attf-src="{{calendar_path}}/js/jquery.calendars.nepali.js"/>
+      <script t-attf-src="{{calendar_path}}/js/jquery.calendars.nepali-ne.js"/>
+      <script t-attf-src="{{calendar_path}}/js/jquery.plugin.js"/>
+      <script t-attf-src="{{calendar_path}}/js/jquery.calendars.picker.js"/> -->
+      <!-- <script src="/nepali_date/static/src/js/main.js"/> -->
+    </xpath>
+  </template>
+</odoo>
