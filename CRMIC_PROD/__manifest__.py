@@ -16,6 +16,7 @@
         'views/oder_view.xml',
         'views/stock_picking_view.xml',
         'views/purchase_view.xml',
+        'views/stock_move.xml',
         'reports/challan_report.xml',
         'reports/challan_template.xml',
         'reports/purchase_order_report.xml',

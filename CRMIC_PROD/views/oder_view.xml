@@ -27,7 +27,11 @@
             <xpath expr="//button[@name='action_confirm']" position="attributes">
                 <attribute name="groups">CRMIC_PROD.kalash_admin_group</attribute>
             </xpath>
-
+           <xpath expr="//page[@name='components']" position="inside">
+                    <group>
+                        <field name="remarks" widget="text" placeholder="Add your notes here..."/>
+                    </group>
+                </xpath>
         </field>
     </record>
     <record id="mrp.mrp_production_action" model="ir.actions.act_window">
