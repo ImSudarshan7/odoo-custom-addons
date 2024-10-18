@@ -1,5 +1,7 @@
 from odoo import models
 import logging
+from datetime import datetime
+import nepali_datetime
 
 _logger = logging.getLogger(__name__)
 
@@ -24,6 +26,13 @@ class ManufacturingOrderReportXlsx(models.AbstractModel):
         rec = self.env['mrp.production'].search(domain)
         return rec
 
+    def convert_to_nepali_date(self, gregorian_date_str):
+        """Converts a Gregorian date string to a Nepali date string (YYYY-MM-DD)."""
+        gregorian_datetime = datetime.strptime(gregorian_date_str, '%Y-%m-%d')
+        gregorian_date = gregorian_datetime.date()
+        nepali_date = nepali_datetime.date.from_datetime_date(gregorian_date)
+        return nepali_date.strftime('%Y-%m-%d')
+
     def generate_xlsx_report(self, workbook, data, orders):
         sheet = workbook.add_worksheet('Manufacturing Report')
         bold = workbook.add_format({'bold': True, 'bg_color': '#D3D3D3'})
@@ -33,17 +42,25 @@ class ManufacturingOrderReportXlsx(models.AbstractModel):
         normal_center = workbook.add_format({'align': 'center','valign': 'vcenter', 'border': 1})
 
         sheet.merge_range('A1:H1', 'Manufacturing Report', workbook.add_format({'bold': True, 'font_size': 20, 'align': 'center'}))
-        sheet.write(2, 0, 'Production Date:', bold)
+        sheet.write(2, 0, 'Start Date:', bold)
         sheet.write(2, 1, data.get('start_date'))
+        sheet.write(2, 2, 'End Date:', bold)
+        sheet.write(2, 3, data.get('end_date'))
 
-        headers = ['S.N.', 'Production No.', 'Component', 'Lot No.', 'Qty','UoM', 'Finished Product', 'Lot No.', 'Qty','UoM', 'Weight per unit', 'Total Weight']
+        sheet.write(3, 0, 'Printed By:', bold)
+        sheet.write(3, 1, self.env.user.name)
+        sheet.write(4, 0, 'Printed Date:', bold)
+        sheet.write(4, 1, datetime.today().strftime('%Y-%m-%d'))
+
+        headers = ['S.N.', 'Production No.', 'Production Date (A.D.)', 'Production Date (B.S.)', 'Component', 'Lot No.', 'Qty', 'UOM', 'Finished Product', 'Lot No.', 'Qty', 'UOM', 'Weight per unit', 'Total Weight']
         column_widths = {i: len(headers[i]) for i in range(len(headers))}
 
+        # Write headers
         for col_num, header in enumerate(headers):
-            sheet.write(4, col_num, header, bold_center)
+            sheet.write(5, col_num, header, bold_center)
             column_widths[col_num] = max(column_widths[col_num], len(header))
 
-        row = 5
+        row = 6
         index = 1
         records = self.get_mrp_report(data)
 
@@ -56,46 +73,58 @@ class ManufacturingOrderReportXlsx(models.AbstractModel):
             weight_per_unit = order.product_id.product_tmpl_id.weight
             total_weight = order.product_qty * weight_per_unit
 
+            # Convert production date to Nepali
+            gregorian_date_str = order.date_planned_start.strftime('%Y-%m-%d')
+            nepali_date_str = self.convert_to_nepali_date(gregorian_date_str)
+
+            # Merge cells for orders with multiple components
             if num_components > 1:
                 sheet.merge_range(first_row, 0, last_row, 0, index, normal_center)
                 sheet.merge_range(first_row, 1, last_row, 1, order.name, normal_center)
-                sheet.merge_range(first_row, 6, last_row, 6, order.product_id.display_name, normal_center)
-                sheet.merge_range(first_row, 7, last_row, 7, order.lot_producing_id.name or "", normal_center)
-                sheet.merge_range(first_row, 8, last_row, 8, order.product_qty, normal_center)
-                sheet.merge_range(first_row, 9, last_row, 9, order.product_uom_id.name, normal_center)
-                sheet.merge_range(first_row, 10, last_row, 10, weight_per_unit, normal_center)
-                sheet.merge_range(first_row, 11, last_row, 11, total_weight, normal_center)
+                sheet.merge_range(first_row, 2, last_row, 2, gregorian_date_str, normal_center)
+                sheet.merge_range(first_row, 3, last_row, 3, nepali_date_str, normal_center)
+                sheet.merge_range(first_row, 8, last_row, 8, order.product_id.display_name, normal_center)
+                sheet.merge_range(first_row, 9, last_row, 9, order.lot_producing_id.name or "", normal_center)
+                sheet.merge_range(first_row, 10, last_row, 10, order.product_qty, normal_center)
+                sheet.merge_range(first_row, 11, last_row, 11, order.product_uom_id.name, normal_center)
+                sheet.merge_range(first_row, 12, last_row, 12, weight_per_unit, normal_center)
+                sheet.merge_range(first_row, 13, last_row, 13, total_weight, normal_center)
             else:
                 sheet.write(first_row, 0, index, normal_center)
                 sheet.write(first_row, 1, order.name, border)
-                sheet.write(first_row, 6, order.product_id.display_name, normal_center)
-                sheet.write(first_row, 7, order.lot_producing_id.name or "", normal_center)
-                sheet.write(first_row, 8, order.product_qty, normal_center)
-                sheet.write(first_row, 9, order.product_uom_id.name, normal_center)
-                sheet.write(first_row, 10, weight_per_unit, normal_center)
-                sheet.write(first_row, 11, total_weight, normal_center)
+                sheet.write(first_row, 2, gregorian_date_str, border)
+                sheet.write(first_row, 3, nepali_date_str, border)
+                sheet.write(first_row, 8, order.product_id.display_name, normal_center)
+                sheet.write(first_row, 9, order.lot_producing_id.name or "", normal_center)
+                sheet.write(first_row, 10, order.product_qty, normal_center)
+                sheet.write(first_row, 11, order.product_uom_id.name, normal_center)
+                sheet.write(first_row, 12, weight_per_unit, normal_center)
+                sheet.write(first_row, 13, total_weight, normal_center)
 
+            # Adjust column widths based on content
             column_widths[0] = max(column_widths[0], len(str(index)))
             column_widths[1] = max(column_widths[1], len(order.name))
-            column_widths[6] = max(column_widths[6], len(order.product_id.display_name))
-            column_widths[7] = max(column_widths[7], len(order.lot_producing_id.name or ""))
-            column_widths[8] = max(column_widths[8], len(str(order.product_qty)))
-            column_widths[9] = max(column_widths[9], len(str(order.product_uom_id.name)))
-            column_widths[10] = max(column_widths[10], len(str(weight_per_unit)))
-            column_widths[11] = max(column_widths[11], len(str(total_weight)))
+            column_widths[2] = max(column_widths[2], len(gregorian_date_str))
+            column_widths[3] = max(column_widths[3], len(nepali_date_str))
+            column_widths[8] = max(column_widths[8], len(order.product_id.display_name))
+            column_widths[9] = max(column_widths[9], len(order.lot_producing_id.name or ""))
+            column_widths[10] = max(column_widths[10], len(str(order.product_qty)))
+            column_widths[11] = max(column_widths[11], len(order.product_uom_id.name))
+            column_widths[12] = max(column_widths[12], len(str(weight_per_unit)))
+            column_widths[13] = max(column_widths[13], len(str(total_weight)))
 
+            # Write components
             for component in order.move_raw_ids:
-                sheet.write(row, 2, component.product_id.display_name, border)
+                sheet.write(row, 4, component.product_id.display_name, border)
                 lot_numbers = ", ".join([lot.name for lot in component.lot_ids])
-                sheet.write(row, 3, lot_numbers, border)
-                sheet.write(row, 4, component.quantity_done, normal_center)
-                sheet.write(row, 5, component.product_uom.name, normal_center)
+                sheet.write(row, 5, lot_numbers, normal_center)
+                sheet.write(row, 6, component.product_uom_qty, normal_center)
+                sheet.write(row, 7, component.product_uom.name, normal_center)
 
-                column_widths[2] = max(column_widths[2], len(component.product_id.display_name))
-                column_widths[3] = max(column_widths[3], len(lot_numbers))
-                column_widths[4] = max(column_widths[4], len(str(component.quantity_done)))
-                column_widths[5] = max(column_widths[5], len(str(component.product_uom.name)))
-
+                column_widths[4] = max(column_widths[4], len(component.product_id.display_name))
+                column_widths[5] = max(column_widths[5], len(lot_numbers))
+                column_widths[6] = max(column_widths[6], len(str(component.product_uom_qty)))
+                column_widths[7] = max(column_widths[7], len(str(component.product_uom.name)))
 
                 row += 1
 
@@ -103,7 +132,6 @@ class ManufacturingOrderReportXlsx(models.AbstractModel):
 
         sheet.write(row + 4, 0, 'Authorized Signature', bold)
 
-        # Adjust column widths
+        # Adjust column widths for better readability
         for col_num, width in column_widths.items():
-            sheet.set_column(col_num, col_num, width + 5)  # Adding some padding for better visibility
-
+            sheet.set_column(col_num, col_num, width + 5)  # Adding some padding
