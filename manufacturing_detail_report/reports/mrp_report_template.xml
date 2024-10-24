@@ -72,7 +72,7 @@
                                       </t>
                                   </td>
                                   <td>
-                                      <t t-esc="data.move_raw_ids[0].quantity_done"/>
+                                      <t t-esc="data.move_raw_ids[0].product_uom_qty"/>
                                   </td>
                                   <td t-att-rowspan="component_count">
                                       <t t-esc="data.product_id.display_name"/>
@@ -92,7 +92,7 @@
                                               <t t-esc="lot.name"/><br/>
                                           </t>
                                       </td>
-                                      <td><t t-esc="component.quantity_done"/></td>
+                                      <td><t t-esc="component.product_uom_qty"/></td>
                                   </tr>
                               </t>
                           </t>
