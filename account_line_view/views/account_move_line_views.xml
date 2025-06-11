@@ -13,9 +13,9 @@
                 <field name="account_id" optional="hide"/>
                 <field name="quantity"/>
                 <field name="product_uom_id" optional="hide"/>
-                <field name="price_unit"/>
+                <field name="price_unit" optional="hide"/>
                 <field name="tax_ids" optional="hide"/>
-                <field name="price_subtotal"/>
+                <field name="price_subtotal" optional="hide"/>
                 <field name="discount" optional="hide"/>
             </tree>
         </field>

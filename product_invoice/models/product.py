@@ -120,4 +120,8 @@ class AccountMoveLine(models.Model):
     #     invoice view values related to invoice lines
     date_invoice = fields.Date(string='Date invoice', related='move_id.invoice_date', store=True, readonly=True)
     date_due = fields.Date(string='Date due', related='move_id.invoice_date_due', store=True, readonly=True)
+   
+
+
+
 

@@ -12,7 +12,7 @@
                 </xpath>
                 <xpath expr="//field[@name='invoice_date']" position="after">
 
-                    <field name="picking_type_id" readonly="1"/>
+                    <field name="picking_type_id" readonly="1" force_save="1"/>
                     <field name="invoice_picking_id" invisible="1"/>
                 </xpath>
                 <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
@@ -23,6 +23,39 @@
                             icon="fa-truck">
                         <field name="picking_count" string="Shipment" widget="statinfo"/>
                     </button>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_invoice_tree" model="ir.ui.view">
+            <field name="name">account.invoice.tree.inherit</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_invoice_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='state']" position="after">
+                    <field name="picking_state" widget="badge" optional="show"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="purchase_order_kpis_tree" model="ir.ui.view">
+            <field name="name">purchase.order.purchase.order.tree.inherit</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_kpis_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='state']" position="after">
+                    <field name="picking_state" widget="badge" optional="show"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="purchase_order_view_tree" model="ir.ui.view">
+            <field name="name">purchase.order.view.tree.inherit</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_view_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='state']" position="after">
+                    <field name="picking_state" widget="badge" optional="show"/>
                 </xpath>
             </field>
         </record>

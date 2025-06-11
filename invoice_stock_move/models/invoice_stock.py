@@ -21,6 +21,8 @@
 #############################################################################
 from odoo.exceptions import UserError
 from odoo import models, fields, api, _
+import logging
+_logger = logging.getLogger(__name__)
 
 
 class InvoiceStockMove(models.Model):
@@ -39,7 +41,10 @@ class InvoiceStockMove(models.Model):
                     return line
 
     picking_count = fields.Integer(string="Count", copy=False)
-    invoice_picking_id = fields.Many2one('stock.picking', string="Picking Id", copy=False)
+    invoice_picking_id = fields.Many2one(
+        'stock.picking', string="Picking Id", copy=False)
+    picking_state = fields.Selection(
+        string="Delivery Status", related='invoice_picking_id.state', store=True)
 
     picking_type_id = fields.Many2one('stock.picking.type', 'Picking Type',
                                       default=_get_stock_type_ids,
@@ -124,6 +129,22 @@ class InvoiceStockMove(models.Model):
         reverse_moves = super(InvoiceStockMove, self)._reverse_moves()
         return reverse_moves
 
+    def action_post(self):
+        """Override action_post to create and validate picking."""
+        res = super(InvoiceStockMove, self).action_post()
+        self.action_stock_move()
+        try:
+            if self.invoice_picking_id:
+                self.invoice_picking_id.action_confirm()
+                self.invoice_picking_id.action_assign()
+                self.invoice_picking_id.action_set_quantities_to_reservation()
+                if self.invoice_picking_id.state == 'assigned':
+                    self.invoice_picking_id.with_context(
+                        skip_immediate=True).button_validate()
+        except Exception as e:
+            _logger.info('Picking creation error: %s' % str(e))
+        return res
+
 
 class SupplierInvoiceLine(models.Model):
     _inherit = 'account.move.line'
@@ -173,3 +194,13 @@ class SupplierInvoiceLine(models.Model):
             template['product_uom_qty'] = diff_quantity
             done += moves.create(template)
         return done
+
+    class StockMove(models.Model):
+        _inherit = 'stock.move'
+
+        def _should_bypass_reservation(self, forced_location=False):
+            self.ensure_one()
+            location = forced_location or self.location_id
+            if self.product_id.tracking != 'none':
+                return location.should_bypass_reservation() or self.product_id.type != 'product'
+            return True

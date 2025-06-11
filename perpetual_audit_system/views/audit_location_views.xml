@@ -1,0 +1,36 @@
+<odoo>
+    <record id="view_audit_location_tree" model="ir.ui.view">
+        <field name="name">audit.location.tree</field>
+        <field name="model">audit.location</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="location_code"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_audit_location_form" model="ir.ui.view">
+        <field name="name">audit.location.form</field>
+        <field name="model">audit.location</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="location_code"/>
+                        <field name="items_to_assign"/>
+                        <field name="auditor_ids" widget="many2many_tags"/>
+                        <field name="item_ids" widget="many2many_tags" invisible="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_audit_location" model="ir.actions.act_window">
+        <field name="name">Audit Locations</field>
+        <field name="res_model">audit.location</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

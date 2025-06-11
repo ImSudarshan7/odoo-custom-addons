@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <data>
+        <record id="dashboard_view_group" model="res.groups">
+            <field name="name">Access Dashboard Button</field>
+        </record>
+    </data>
+</odoo>

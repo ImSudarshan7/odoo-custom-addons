@@ -78,6 +78,7 @@
                                     <tr>
                                         <td width="30%">
                                             <b>Date:</b>
+<!--                                            <t t-esc="doc.get_nepali_date(doc.date_order)"/>-->
                                             <!--                                    <t t-esc="doc.date_order"/>-->
                                             <span t-field="doc.date_order"/>
                                         </td>
@@ -181,7 +182,7 @@
                                     </t>
                                 </td>
 
-                                                               <td align="right">
+                                <td align="right">
                                     <span t-esc="'{0:,.2f}'.format(l.price_unit)"/>
                                     <span t-field="doc.currency_id.symbol"/>
 
@@ -215,7 +216,7 @@
                                     <b>Taxable Amount</b>
                                 </td>
                                 <td align="right">
-                                    <span t-esc="'{0:,.2f}'.format(doc.amount_untaxed)" />
+                                    <span t-esc="'{0:,.2f}'.format(doc.amount_untaxed)"/>
                                     <span t-field="doc.currency_id.symbol"/>
                                 </td>
                             </tr>

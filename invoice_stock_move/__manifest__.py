@@ -29,7 +29,7 @@
     'company': 'Cybrosys Techno Solutions',
     'website': "https://www.cybrosys.com",
     'category': 'Accounting',
-    'depends': ['base', 'account', 'stock', 'payment'],
+    'depends': ['base', 'account', 'stock', 'payment', 'purchase', 'CRMIC_PROD'],
     'data': ['views/invoice_stock_move_view.xml'],
     'images': ['static/description/banner.png'],
     'license': 'AGPL-3',

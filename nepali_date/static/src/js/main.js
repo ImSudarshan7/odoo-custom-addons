@@ -1,6 +1,6 @@
 odoo.define('nepali_date.Calendar', function (require) {
   "use strict";
-  console.log("hello niraj")
+  console.log("HI Devendra")
   var web_fields = require('web.basic_fields');
   var datepicker = require('web.datepicker');
   var ListRenderer = require('web.ListRenderer');

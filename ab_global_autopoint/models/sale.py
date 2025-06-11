@@ -1,5 +1,7 @@
 from odoo import models, fields, api, _
-
+from odoo.exceptions import UserError
+# from nepali_datetime import date as nepali_date
+# from pytz import timezone
 
 class SaleOrderInherit(models.Model):
     _inherit = 'sale.order'
@@ -18,7 +20,16 @@ class SaleOrderInherit(models.Model):
     state_1 = fields.Selection([('validator', 'Validator')])
     # delivery_set = fields.Boolean()
     # is_all_service = fields.Boolean()
-  
+
+    # def get_nepali_date(self, dt):
+    #     # Convert to Kathmandu timezone first
+    #     if dt:
+    #         kathmandu_tz = timezone('Asia/Kathmandu')
+    #         dt_local = dt.astimezone(kathmandu_tz)
+    #         ad_date = dt_local.date()
+    #         nep_date = nepali_date.from_datetime_date(ad_date)
+    #         return f"{nep_date.year}-{nep_date.month:02d}-{nep_date.day:02d} (B.S.)"
+    #     return ''
 
     def button_validator1(self):
         self.state_1 = 'validator'
@@ -56,6 +67,27 @@ class SaleOrderInherit(models.Model):
                     rec.vehicle_num = rec.job_card_no.vehicle_id
                 if rec.job_card_no.customer_id:
                     rec.partner_id = rec.job_card_no.customer_id
+
+    def action_confirm(self):
+        for order in self:
+            insufficient_stock_products = []  # Collect insufficient stock details
+            for line in order.order_line:
+                product = line.product_id
+                if product.type == 'product':  # Only check stockable products
+                    if product.qty_available < line.product_uom_qty:
+                        insufficient_stock_products.append(
+                            _('Product: "%s", Available: %s, Required: %s') % (
+                                product.display_name,
+                                product.qty_available,
+                                line.product_uom_qty
+                            )
+                        )
+            if insufficient_stock_products:
+                warning_message = _(
+                    "The following products do not have sufficient stock:\n\n%s"
+                ) % "\n".join(insufficient_stock_products)
+                order.message_post(body=warning_message)
+        return super(SaleOrderInherit, self).action_confirm()
 
     # @api.onchange('requisition_id')
     # def onchange_requisition_id(self):
@@ -96,3 +128,24 @@ class SaleOrderInherit(models.Model):
     #             }
     #             lines.append((vals))
     #         rec.order_line = lines
+class SaleOrderLine(models.Model):
+    _inherit = 'sale.order.line'
+
+    @api.onchange('product_id', 'product_uom_qty')
+    def _onchange_check_stock(self):
+        """
+        This method is triggered when a product is added or the quantity is changed in the order line.
+        It checks if the stock is sufficient and raises an alert if not.
+        """
+        for line in self:
+            if line.product_id and line.product_id.type == 'product':  # Check only for stockable products
+                available_qty = line.product_id.qty_available
+                if line.product_uom_qty > available_qty:
+                    warning_message = {
+                        'title': _('Insufficient Stock!'),
+                        'message': _(
+                            'The product "%s" does not have sufficient stock.\n\n'
+                            'Available Quantity: %s\nRequired Quantity: %s'
+                        ) % (line.product_id.display_name, available_qty, line.product_uom_qty),
+                    }
+                    return {'warning': warning_message}

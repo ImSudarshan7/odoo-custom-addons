@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record model="ir.module.category" id="category_ticket_management_dashboard">
+            <field name="description">Helps you handle your Dashboard security.</field>
+            <field name="sequence">9</field>
+            <field name="name">Dashboard</field>
+        </record>
+
+
+        <record id="dashboard_group_user" model="res.groups">
+            <field name="name">User</field>
+            <field name="category_id" ref="category_ticket_management_dashboard"/>
+
+        </record>
+
+        <record id="dashboard_group_employee" model="res.groups">
+            <field name="name">Employee</field>
+            <field name="category_id" ref="category_ticket_management_dashboard"/>
+            <field name="implied_ids" eval="[(4, ref('dashboard_group_user'))]"/>
+        </record>
+
+
+        <record id="dashboard_group_admin" model="res.groups">
+            <field name="name">Admin</field>
+            <field name="category_id" ref="category_ticket_management_dashboard"/>
+            <field name="implied_ids" eval="[(4, ref('dashboard_group_employee'))]"/>
+            <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+
+        </record>
+
+    </data>
+
+</odoo>

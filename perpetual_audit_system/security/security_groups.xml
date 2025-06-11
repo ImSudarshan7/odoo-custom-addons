@@ -1,0 +1,51 @@
+<odoo>
+    <!-- New Module Category for Audit Management -->
+    <record id="module_category_audit" model="ir.module.category">
+        <field name="name">Audit Management</field>
+        <field name="description">Manage audit sessions, category groups, and reports</field>
+        <field name="sequence" eval="10"/>
+    </record>
+
+    <!-- Auditor Group with Restricted Access -->
+    <record id="group_audit_auditor" model="res.groups">
+        <field name="name">Audit Auditor</field>
+    </record>
+
+    <!-- Admin Group with Full Access -->
+    <record id="group_audit_admin" model="res.groups">
+        <field name="name">Audit Admin</field>
+        <field name="users" eval="[(4, ref('base.user_admin'))]"/>
+    </record>
+
+    <!-- Admin can see all sessions -->
+    <record id="audit_session_rule_admin" model="ir.rule">
+        <field name="name">Session - Admin Full Access</field>
+        <field name="model_id" ref="model_audit_session"/>
+        <field name="groups" eval="[(4, ref('group_audit_admin'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+    <!-- Auditor can see only sessions linked to them -->
+    <record id="audit_session_rule_auditor" model="ir.rule">
+        <field name="name">Session - Auditor Limited Access</field>
+        <field name="model_id" ref="model_audit_session"/>
+        <field name="groups" eval="[(4, ref('group_audit_auditor'))]"/>
+        <field name="domain_force">[('auditor_id', '=', user.id)]</field>
+    </record>
+
+    <!-- Admin can see all logs -->
+    <record id="audit_log_rule_admin" model="ir.rule">
+        <field name="name">Log - Admin Full Access</field>
+        <field name="model_id" ref="model_audit_log"/>
+        <field name="groups" eval="[(4, ref('group_audit_admin'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+    <!-- Auditor can see only logs linked to them -->
+    <record id="audit_log_rule_auditor" model="ir.rule">
+        <field name="name">Log - Auditor Limited Access</field>
+        <field name="model_id" ref="model_audit_log"/>
+        <field name="groups" eval="[(4, ref('group_audit_auditor'))]"/>
+        <field name="domain_force">[('auditor_id', '=', user.id)]</field>
+    </record>
+</odoo>

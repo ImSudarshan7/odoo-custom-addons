@@ -89,7 +89,7 @@ class JobOrderSummaryReport(models.TransientModel):
 
         sheet.write(12, 0, 'S.No', format1)
         sheet.write(12, 1, "Customer's Name", format1)
-        sheet.write(12, 2, "Job Card No.", format1)
+        sheet.write(12, 2, "Contact Person", format1)
         sheet.write(12, 3, 'Contact Number', format1)
         sheet.write(12, 4, 'Vehicle Reg. No.', format1)
         sheet.write(12, 5, 'Date of failure', format1)
@@ -104,7 +104,7 @@ class JobOrderSummaryReport(models.TransientModel):
         for rec in record:
             sheet.write(row, 0, str(i), format3)
             sheet.write(row, 1, str(rec.customer_id.name), format3)
-            sheet.write(row, 2, str(rec.name), format3)
+            sheet.write(row, 2, str(rec.contact_person), format3)
 
             if rec.mobile:
                 sheet.write(row, 3, str(rec.mobile), format3)

@@ -128,6 +128,12 @@
                     }"/>
                 </group>
             </xpath>
+                 <xpath expr="//field[@name='move_ids_without_package']/tree/field[@name='product_uom_qty']" position="attributes">
+                <attribute name="sum">Total</attribute>
+            </xpath>
+            <xpath expr="//field[@name='move_ids_without_package']/tree/field[@name='quantity_done']" position="attributes">
+                <attribute name="sum">Total</attribute>
+            </xpath>
         </field>
     </record>
     <record id="view_stock_tree_inherited" model="ir.ui.view">

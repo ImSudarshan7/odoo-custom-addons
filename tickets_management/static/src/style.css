@@ -1,0 +1,94 @@
+                                <style>
+
+                                    /* General styling */
+                                    .ticket_management_form .o_field_widget {
+                                    font-family: 'Arial', sans-serif;
+                                    font-size: 14px;
+                                    color: #333;
+                                    background-color: #f9f9f9;
+                                    border-radius: 8px;
+                                    border: 1px solid #ddd;
+                                    padding: 12px 15px;
+                                    margin-bottom: 20px;
+                                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                                    transition: all 0.3s ease;
+                                    }
+
+                                    .ticket_management_form .o_field_widget:hover {
+                                    transform: translateY(-2px);
+                                    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+                                    }
+
+                                    /* Header and Button Styling */
+                                    .ticket_management_form header button {
+                                    background-color: #4CAF50;
+                                    color: white;
+                                    border: none;
+                                    padding: 12px 20px;
+                                    margin-right: 12px;
+                                    border-radius: 25px;
+                                    cursor: pointer;
+                                    font-size: 16px;
+                                    font-weight: bold;
+                                    transition: background-color 0.3s ease, transform 0.3s ease;
+                                    display: inline-flex;
+                                    align-items: center;
+                                    }
+
+                                    .ticket_management_form header button:hover {
+                                    background-color: #45a049;
+                                    transform: scale(1.05);
+                                    }
+
+                                    .ticket_management_form header button:active {
+                                    background-color: #388e3c;
+                                    }
+
+                                    /* Statusbar styling */
+                                    .ticket_management_form .o_statusbar {
+                                    background: linear-gradient(90deg, #f4f4f4, #ececec);
+                                    padding: 8px;
+                                    border-radius: 20px;
+                                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                                    }
+
+                                    .ticket_management_form .o_statusbar .o_statusbar_item {
+                                    font-weight: bold;
+                                    text-align: center;
+                                    padding: 12px 20px;
+                                    border-radius: 5px;
+                                    cursor: pointer;
+                                    transition: background-color 0.3s ease, transform 0.3s ease;
+                                    }
+
+                                    .ticket_management_form .o_statusbar .o_statusbar_item:hover {
+                                    background-color: #ddd;
+                                    transform: translateY(-2px);
+                                    }
+
+                                    /* Fields */
+                                    .ticket_management_form .o_field_widget input,
+                                    .ticket_management_form .o_field_widget select,
+                                    .ticket_management_form .o_field_widget textarea {
+                                    width: 100%;
+                                    padding: 14px;
+                                    border-radius: 8px;
+                                    font-size: 14px;
+                                    margin-top: 10px;
+                                    background-color: #fff;
+                                    border: 1px solid #ddd;
+                                    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+                                    }
+
+                                    .ticket_management_form .o_field_widget input:focus,
+                                    .ticket_management_form .o_field_widget select:focus,
+                                    .ticket_management_form .o_field_widget textarea:focus {
+                                    border-color: #4CAF50;
+                                    outline: none;
+                                    box-shadow: 0 0 8px rgba(76, 175, 80, 0.4);
+                                    }
+
+                                    /* Add other styles similarly scoped */
+
+
+                                </style>

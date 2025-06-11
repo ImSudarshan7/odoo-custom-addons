@@ -8,6 +8,7 @@ class ResPartner(models.Model):
     state_id = fields.Many2one('res.country.state', required=True)
     country_id = fields.Many2one('res.country', required=True)
     mobile = fields.Char(required=True)
+    odc= fields.Integer(string="ODC")
 
 @api.onchange('company_type')
 def _onchange_company_type(self):

@@ -1,5 +1,6 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
+import re
 
 class ProductNature(models.Model):
     _name = 'product.nature'
@@ -25,3 +26,25 @@ class ProductTemplate(models.Model):
     
     product_nature_id = fields.Many2one('product.nature', 'Product Nature')
 
+
+@api.model
+def create(self, vals):
+    if vals.get('product_nature_id'):
+        product_nature = self.env['product.nature'].browse(vals['product_nature_id'])
+        if product_nature:
+            prefix = product_nature.code.upper()
+
+            last_product = self.search([
+                ('default_code', '=like', f"{prefix}%")
+            ], order="default_code desc", limit=1)
+
+            # Extract numeric part after prefix
+            numeric_part = re.search(r'\d+$', last_product.default_code.replace(prefix, ''))
+            last_number = int(numeric_part.group()) if numeric_part else 0
+
+            # Generate new default code
+            new_number = last_number + 1
+            new_default_code = f"{prefix}{str(new_number).zfill(4)}"
+            vals['default_code'] = new_default_code
+
+    return super(ProductTemplate, self).create(vals)

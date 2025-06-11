@@ -20,3 +20,4 @@
 #
 #############################################################################
 from . import invoice_stock
+from . import purchase_order

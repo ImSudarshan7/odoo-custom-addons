@@ -13,11 +13,11 @@ class PartnerInherit(models.Model):
                 if not re.match("^[0-9]{10}$", rec.mobile):
                     raise ValidationError(_('The mobile number cannot contain character other than number and must be ten digits'))
 
-    @api.constrains('name')
-    def check_name(self):
-        for rec in self:
-            if re.search(r'\d', rec.name):
-                raise ValidationError(_('The Name of Person cannot contain number'))
+    # @api.constrains('name')
+    # def check_name(self):
+    #     for rec in self:
+    #         if re.search(r'\d', rec.name):
+    #             raise ValidationError(_('The Name of Person cannot contain number'))
 
     @api.onchange('name')
     def caps_name(self):

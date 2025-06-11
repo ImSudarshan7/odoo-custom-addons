@@ -8,6 +8,7 @@ class AccountMove(models.Model):
     invoice_location = fields.Selection([
         ('ktm', 'Kathmandu Office'),
         ('sif', 'Simara Office')
+
     ], string='Invoice Location', tracking=True,
         help="Select the office location where this invoice is being processed.", required=True)
 

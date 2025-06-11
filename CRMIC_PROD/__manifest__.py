@@ -9,12 +9,14 @@
         This module provides customizations for the Kalashshop in CRMIC_PROD.
         
     """,
-    'depends': ['base', 'contacts', 'mail', 'stock', 'purchase', 'mrp','account'],
+    'depends': ['base', 'contacts', 'mail', 'sale', 'stock', 'purchase', 'mrp','account', 'sale_stock'],
     'data': [
         'security/security.xml',
         'views/res_partner_view.xml',
         'views/oder_view.xml',
+        'views/sales_view.xml',
         'views/stock_picking_view.xml',
+        'views/manufacturing_view.xml',
         'views/purchase_view.xml',
         'views/stock_move.xml',
         'reports/challan_report.xml',

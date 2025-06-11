@@ -1,0 +1,11 @@
+<odoo>
+    <!-- <record id="scheduled_auto_assign_sessions" model="ir.cron">
+        <field name="name">Auto-Assign Audit Sessions</field>
+        <field name="model_id" ref="model_audit_session"/>
+        <field name="state">code</field>
+        <field name="code">model.auto_assign_sessions()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="active">True</field>
+    </record> -->
+</odoo>

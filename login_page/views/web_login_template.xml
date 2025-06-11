@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="custom_login_poweredby" inherit_id="web.login_layout" name="Login Layout">
+        <!-- Use XPath to find the original "Powered by Odoo" link -->
+        <!-- This XPath targets the anchor tag with the specific href and text -->
+        <xpath expr="//a[@href='https://www.odoo.com'][contains(.,'Powered by')]" position="replace">
+            <!-- Replace it with your custom link -->
+            <a href="https://crmictech.com/" target="_blank">Powered by CRMIC</a>
+            <!-- Adjust the href and text above to your desired URL and company name -->
+        </xpath>
+    </template>
+</odoo>
+

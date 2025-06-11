@@ -1,0 +1,14 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+sale_purchase_reports,ps.report,model_ps_report,,1,1,1,1
+
+
+
+
+
+
+
+
+
+
+
+
