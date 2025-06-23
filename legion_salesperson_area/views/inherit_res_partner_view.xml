@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!--inherit contacts tree view and added given fields-->
+        <record id="res_partner_tree_inherit" model="ir.ui.view">
+            <field name="name">res.partner.inherit.tree</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='email']" position="after">
+                    <field name="area_id"/>
+                    <field name="day_selection"/>
+                    <field name="user_type"/>
+
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Inherit Res partner Form View for area_id field addition -->
+        <record id="res_partner_inherit_form" model="ir.ui.view">
+            <field name="name">res.partner.form.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='vat']" position="before">
+                    <field name="user_type"/>
+                    <field name="area_id"/>
+                    <field name="day_selection"/>
+                    <!-- <field name="current_user" /> -->
+                </xpath>
+            </field>
+        </record>
+
+        <record id="res_partner_inherit_filter" model="ir.ui.view">
+            <field name="name">res.partner.filter</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_res_partner_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//search/group" position="inside">
+                    <filter string="Sales Person Areas" name="area_id" context="{'group_by':'area_id'}"/>
+                    <filter string="Days By" name="day_selection" context="{'group_by':'day_selection'}"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

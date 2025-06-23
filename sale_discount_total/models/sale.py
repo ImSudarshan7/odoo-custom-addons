@@ -59,7 +59,7 @@ class SaleOrder(models.Model):
                                    track_visibility='always')
     amount_discount = fields.Monetary(string='Discount', store=True, readonly=True, compute='_amount_all',
                                       digits=dp.get_precision('Account'), track_visibility='always')
-    # vehicle_num = fields.Many2one('vehicle.create', string="Vehicle Number")
+    vehicle_num = fields.Many2one('vehicle.create', string="Vehicle Number")
 
     @api.onchange('discount_type', 'discount_rate', 'order_line')
     def supply_rate(self):
@@ -84,7 +84,7 @@ class SaleOrder(models.Model):
         invoice_vals.update({
             'discount_type': self.discount_type,
             'discount_rate': self.discount_rate,
-            # 'vehicle_num': self.vehicle_num.id,
+            'vehicle_num': self.vehicle_num.id,
         })
         return invoice_vals
 

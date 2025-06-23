@@ -12,19 +12,20 @@
     'website': "https://www.cybrosys.com",
     'depends': ['web', 'hr', 'point_of_sale'],
     'data': [
-        'security/ir.model.access.csv',
         'security/security.xml',
+        'security/ir.model.access.csv',
         'data/data_view.xml',
         'views/dynamic_block_views.xml',
         'views/dashboard_views.xml',
 
-        'views/dashboard_menu_views.xml',
+
 
     ],
     'assets': {
         'web.assets_backend': [
             'advanced_dynamic_dashboard/static/lib/css/gridstack.min.css',
             'advanced_dynamic_dashboard/static/src/css/dynamic_dashboard.css',
+       
             'advanced_dynamic_dashboard/static/src/scss/dynamic_dashboard.scss',
             "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css",
             'https://cdnjs.cloudflare.com/ajax/libs/gridstack.js/0.2.6/gridstack.min.js',

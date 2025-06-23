@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="sales_person_area_tree" model="ir.ui.view">
+            <field name="name">salesperson.area.tree</field>
+            <field name="model">salesperson.area</field>
+            <field name="arch" type="xml">
+                <tree string="Sales Person Areas">
+                    <field name="name_seq"/>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="sales_person_form" model="ir.ui.view">
+            <field name="name">salesperson.area.form</field>
+            <field name="model">salesperson.area</field>
+            <field name="arch" type="xml">
+                <form string="Sales Person Area">
+                    <header>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name_seq" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread" options="{'post_refresh': 'recipients'}"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="sales_person_area_graph" model="ir.ui.view">
+            <field name="name">salesperson.area.graph</field>
+            <field name="model">salesperson.area</field>
+            <field name="arch" type="xml">
+                <graph string="Sales Person Areas Graph" type="pie">
+                    <field name="name"/>
+                </graph>
+            </field>
+        </record>
+
+        <record id="sales_person_area_search" model="ir.ui.view">
+            <field name="name">salesperson.area.search</field>
+            <field name="model">salesperson.area</field>
+            <field name="arch" type="xml">
+                <search string="Search Areas">
+                    <field name="name_seq"/>
+                    <field name="name"/>
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter string="name" name="Name" context="{'group_by':'name'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+
+        <record id="action_create_sales_person_area" model="ir.actions.act_window">
+            <field name="name">Sales Person</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">salesperson.area</field>
+<!--            <field name="view_type">form</field>-->
+            <field name="view_mode">tree,form,pivot,graph</field>
+            <field name="context">{}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your Area !
+                </p>
+            </field>
+        </record>
+
+         This Menu Item Must have a parent
+        <menuitem id="menu_sales_person_area_rout"
+                  name="Sales Person Area"
+                  parent="contacts.res_partner_menu_config"
+                  sequence="1"/>
+
+        <menuitem id="menu_create_sales_person_area"
+                  name="Create Sales Person Area"
+                  action="action_create_sales_person_area"
+                  parent="menu_sales_person_area_rout"
+                  sequence="1"/>
+    </data>
+</odoo>

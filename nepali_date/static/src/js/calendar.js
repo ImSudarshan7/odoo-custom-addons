@@ -13,7 +13,7 @@ odoo.define('nepali_date.config', function(require) {
               date_mode = res;
           });
  
-    console.log('Devendra')
+    console.log('Prajwal')
     var format = rpc.query({
               model: 'ir.config_parameter',
               method: 'get_param',

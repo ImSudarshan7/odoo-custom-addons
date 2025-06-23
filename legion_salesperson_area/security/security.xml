@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <!--create custom category for show all contacts-->
+        <record model="ir.module.category" id="module_category_all_contacts">
+            <field name="name">Show All Contacts</field>
+            <field name="description">Category Contacts</field>
+            <field name="sequence">2</field>
+        </record>
+        <!--create custom group for admin to show all contacts-->
+        <record id="group_for_all_contacts" model="res.groups">
+            <field name="name">Admin</field>
+            <field name="category_id" ref="module_category_all_contacts"/>
+        </record>
+        <!--inherit contacts menu and integrate new group for admin to show all contact-->
+        <record model="ir.ui.menu" id="contacts.res_partner_menu_contacts">
+            <field name="groups_id" eval="[(6,0,[ref('group_for_all_contacts')])]"/>
+        </record>
+
+
+        <!--create category for sales person area route dy wise-->
+        <record model="ir.module.category" id="module_category_sales_persons_area_route">
+            <field name="name">Sales Persons Area Route</field>
+            <field name="description">Category Sales Person</field>
+            <field name="sequence">3</field>
+        </record>
+
+        <!--create group for monday route-->
+        <record id="group_sales_person_monday" model="res.groups">
+            <field name="name">Monday Route</field>
+            <field name="category_id" ref="module_category_sales_persons_area_route"/>
+        </record>
+
+        <!--create group for tuesday route-->
+        <record id="group_sales_person_tuesday" model="res.groups">
+            <field name="name">Tuesday Route</field>
+            <field name="category_id" ref="module_category_sales_persons_area_route"/>
+        </record>
+
+        <!--create group for Wednesday route-->
+        <record id="group_sales_person_wednesday" model="res.groups">
+            <field name="name">Wednesday Route</field>
+            <field name="category_id" ref="module_category_sales_persons_area_route"/>
+        </record>
+
+        <!--create group for Thursday route-->
+        <record id="group_sales_person_thursday" model="res.groups">
+            <field name="name">Thursday Route</field>
+            <field name="category_id" ref="module_category_sales_persons_area_route"/>
+        </record>
+
+        <!--create group for friday route-->
+        <record id="group_sales_person_friday" model="res.groups">
+            <field name="name">Friday Route</field>
+            <field name="category_id" ref="module_category_sales_persons_area_route"/>
+        </record>
+
+        <!--create saturday for friday route-->
+        <record id="group_sales_person_saturday" model="res.groups">
+            <field name="name">Saturday Route</field>
+            <field name="category_id" ref="module_category_sales_persons_area_route"/>
+        </record>
+
+        <!--create sunday for friday route-->
+        <record id="group_sales_person_sunday" model="res.groups">
+            <field name="name">Sunday Route</field>
+            <field name="category_id" ref="module_category_sales_persons_area_route"/>
+        </record>
+
+
+        <record id="weekly_user_access_c_rule" model="ir.rule">
+            <field name="name">User Route Access</field>
+            <field name="model_id" ref="base.model_res_partner"/>
+            <field name="global" eval="False"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="1"/>
+            <field name="domain_force">[('id','in',user.get_user_wise_contact())]</field>
+        </record>
+
+
+    </data>
+</odoo>

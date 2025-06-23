@@ -21,7 +21,6 @@
                     <group name="other_filters">
                         <field name="target_move" widget="radio" />
                         <field name="show_partner_details" />
-                        <field name="grouped_by" />
                         <field name="hide_account_at_0" />
                         <field name="foreign_currency" />
                     </group>
@@ -61,18 +60,6 @@
                         options="{'no_create': True}"
                         colspan="4"
                     />
-                </group>
-                <group
-                    name="Filter analytic accounts"
-                    groups="analytic.group_analytic_accounting"
-                >
-                    <field
-                        name="analytic_account_ids"
-                        widget="many2many_tags"
-                        options="{'no_create': True}"
-                    />
-                    <field name="no_analytic" />
-                    <field name="all_analytic" />
                 </group>
                 <footer>
                     <button

@@ -63,7 +63,6 @@
                     <field name="debit" sum="Total debit"/>
                     <field name="credit" sum="Total credit"/>
                     <field name="date_maturity"/>
-                    <field name="company_id" invisible="1"/>
                 </tree>
             </field>
         </record>

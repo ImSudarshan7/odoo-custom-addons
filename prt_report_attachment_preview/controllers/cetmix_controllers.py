@@ -34,7 +34,7 @@ class CxReportController(ReportController):
             doc_ids_len = len(doc_ids)
             if doc_ids_len > 1:
                 model_id = request.env["ir.model"]._get(report.model)
-                return f"{model_id.name} (x{doc_ids_len})"
+                return "{} (x{})".format(model_id.name, doc_ids_len)
             report_name = report.print_report_name
             if doc_ids_len == 1 and report_name:
                 obj = request.env[report.model].browse(doc_ids)

@@ -3,18 +3,16 @@
  * License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl). */
 
 // Attachment Viewer
-.o_web_client .o_DialogManager_dialog {
+.o_web_client.o_chatter_position_sided .o_DialogManager_dialog {
     /* Show sided viewer on large screens */
-    @media (min-width: 1533px) {
-        &:has(.o_AttachmentViewer) {
-            position: static;
-        }
+    @include media-breakpoint-up(lg) {
+        position: static;
         .o_AttachmentViewer_main {
             padding-bottom: 20px;
         }
         .o_AttachmentViewer {
             // On-top of navbar
-            z-index: 1100;
+            z-index: 10;
             position: absolute;
             right: 0;
             top: 0;
@@ -24,7 +22,7 @@
 
             width: $chatter_zone_width;
             &.o_AttachmentViewer_maximized {
-                width: 100% !important;
+                width: 100%;
             }
 
             /* Show/Hide control buttons (next, prev, etc..) */
@@ -37,22 +35,23 @@
                 display: none;
             }
             .o_AttachmentViewer_viewIframe {
-                width: 100% !important;
+                width: 95%;
             }
         }
     }
-    @media (max-width: 1533px) {
+    @include media-breakpoint-down(md) {
         .o_AttachmentViewer_headerItemButtonMinimize,
         .o_AttachmentViewer_headerItemButtonMaximize {
-            display: none !important;
+            display: none;
         }
     }
 }
+
 /* Attachment Viewer Max/Min buttons only are useful in sided mode */
-.o_FormRenderer_chatterContainer:not(.o-aside) {
+.o_web_client:not(.o_chatter_position_sided) {
     .o_AttachmentViewer_headerItemButtonMinimize,
     .o_AttachmentViewer_headerItemButtonMaximize {
-        display: none !important;
+        display: none;
     }
 }
 

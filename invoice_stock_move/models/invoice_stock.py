@@ -48,6 +48,7 @@ class InvoiceStockMove(models.Model):
 
     picking_type_id = fields.Many2one('stock.picking.type', 'Picking Type',
                                       default=_get_stock_type_ids,
+                                      store=True,
                                       help="This will determine picking type of incoming shipment")
 
     state = fields.Selection([
@@ -61,10 +62,14 @@ class InvoiceStockMove(models.Model):
     ], string='Status', index=True, readonly=True, default='draft',
         track_visibility='onchange', copy=False)
 
-    def action_stock_move(self):
-        if not self.picking_type_id:
-            raise UserError(_(
-                " Please select a picking type"))
+    def action_stock_move(self, picking_type_id=None):
+        for rec in self:
+            picking_type = picking_type_id or rec.picking_type_id
+            if not picking_type:
+                raise UserError(_("Please select a picking type"))
+
+        _logger.info(f"=========================dev{self.picking_type_id.name}====================================================================")
+
         for order in self:
             if not self.invoice_picking_id:
                 pick = {}

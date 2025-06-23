@@ -36,6 +36,7 @@
                                    attrs="{'required':[('edit_mode','=', True)]}"/>
                             <field name="filter" widget="domain"
                                    options="{'model': 'model_name'}"/>
+                            <field name="filter_bool" />
                         </group>
                     </group>
                     <group string="Block Information">

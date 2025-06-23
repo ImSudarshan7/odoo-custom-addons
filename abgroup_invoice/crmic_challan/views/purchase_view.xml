@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<odoo>
-    <record id="purchase.purchase_rfq" model="ir.actions.act_window">
-        <field name="name">Purchase Order</field>
-    </record>
-
-</odoo>

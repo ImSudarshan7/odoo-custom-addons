@@ -1,4 +1,3 @@
-
 from ast import literal_eval
 from datetime import datetime
 from odoo import api, fields, models
@@ -91,6 +90,7 @@ class DashboardBlock(models.Model):
          ('year', 'This Year')],
         string='Time Period',
     )
+    filter_bool = fields.Boolean(string="Filter",default=True,)
 
     @api.onchange('model_id')
     def _onchange_model_id(self):
@@ -99,15 +99,18 @@ class DashboardBlock(models.Model):
         self.measured_field_id = False
         self.group_by_id = False
 
-    def get_dashboard_vals(self, action_id, start_date=None, end_date=None):
+    def get_dashboard_vals(self, action_id, start_date=None, end_date=None,):
         """Fetch block values from js and create chart"""
         block_id = []
         user = self.env.user
         company_id=self.env.company
+        is_admin = user.has_group('advanced_dynamic_dashboard.dashboard_group_admin')
+        # Get the specific block if a block ID is provided
+        blocks = self.sudo().search([('client_action_id', '=', int(action_id))])
+        if isinstance(action_id, list) and len(action_id) == 1:
+            blocks = blocks.filtered(lambda r: r.id == action_id[0])
 
-        for rec in self.sudo().search(
-                [('client_action_id', '=', int(action_id))]):
-
+        for rec in blocks:
             if rec.group_id and rec.group_id not in user.groups_id:
                 continue
 
@@ -121,15 +124,17 @@ class DashboardBlock(models.Model):
                     isinstance(filter_item, tuple) and filter_item[0] ==
                     'create_date')]
 
-            if start_date and start_date != 'null':
-                start_date_obj = datetime.strptime(start_date,
-                                                   '%Y-%m-%d')
-                filter_list.append(
-                    ('create_date', '>=', start_date_obj.strftime('%Y-%m-%d')))
-            if end_date and end_date != 'null':
-                end_date_obj = datetime.strptime(end_date, '%Y-%m-%d')
-                filter_list.append(
-                    ('create_date', '<=', end_date_obj.strftime('%Y-%m-%d')))
+            # Only apply date filters if filter_bool is True
+            if rec.filter_bool:
+                if start_date and start_date != 'null':
+                    start_date_obj = datetime.strptime(start_date,
+                                                       '%Y-%m-%d')
+                    filter_list.append(
+                        ('create_date', '>=', start_date_obj.strftime('%Y-%m-%d')))
+                if end_date and end_date != 'null':
+                    end_date_obj = datetime.strptime(end_date, '%Y-%m-%d')
+                    filter_list.append(
+                        ('create_date', '<=', end_date_obj.strftime('%Y-%m-%d')))
             rec.filter = repr(filter_list)
 
             vals = {'id': rec.id,
@@ -138,6 +143,7 @@ class DashboardBlock(models.Model):
                     'graph_type': rec.graph_type,
                     'icon': rec.fa_icon,
                     'cols': rec.graph_size,
+                    'filter_bool': rec.filter_bool,
                     'color': 'background-color: %s;' % rec.tile_color
 
                     if rec.tile_color else '#1f6abb;',
@@ -158,8 +164,8 @@ class DashboardBlock(models.Model):
 
             if rec.filter:
                 domain = expression.AND([literal_eval(rec.filter)])
-            # Add time_period filter
-            if rec.time_period:
+            # Add time_period filter only if filter_bool is True
+            if rec.time_period and rec.filter_bool:
                 today = datetime.today()
                 if rec.time_period == 'today':
                     start_of_today = today.replace(hour=0, minute=0, second=0, microsecond=0)
@@ -189,53 +195,49 @@ class DashboardBlock(models.Model):
                     domain = expression.AND(
                         [domain, [('create_date', '>=', start_of_year), ('create_date', '<=', end_of_year)]])
 
-            if not user.has_group('base.group_system'):
-                domain = expression.AND([domain, [('create_uid', '=', user.id)]])
-
             if company_id:
                 domain = expression.AND([domain, [('company_id', '=', company_id.id)]])
 
-            if user.has_group('hr.employee'):
-                domain = expression.AND([domain, [('employee_id', '=', user.employee_id.id)]])
-
             if rec.model_name:
                 if rec.type == 'graph':
-                    self._cr.execute(self.env[rec.model_name].
-                                     get_query(domain, rec.operation,
-                                               rec.measured_field_id,
-                                               group_by=rec.group_by_id))
+                    query, params, *_ = self.env[rec.model_name].get_query(
+                        domain,
+                        rec.operation,
+                        rec.measured_field_id,
+                        group_by=rec.group_by_id if rec.type == 'graph' else None
+                    )
+                    self._cr.execute(query, params)
 
                     records = self._cr.dictfetchall()
-                    x_axis = []
+                    x_axis, y_axis = [], []
                     for record in records:
-                        if record.get('name') and type(
-                                record.get('name')) == dict:
-                            x_axis.append(record.get('name')[self._context.get(
-                                'lang') or 'en_US'])
-                        else:
-                            x_axis.append(record.get(rec.group_by_id.name))
-                    y_axis = []
-                    for record in records:
-                        y_axis.append(record.get('value'))
-                    vals.update({'x_axis': x_axis, 'y_axis': y_axis})
+                        name = record.get('name')
+                        if isinstance(name, dict):
+                            name = name.get(self._context.get('lang') or 'en_US', str(name))
+                        x_axis.append(name or 'N/A')  
+                        y_axis.append(record.get('value') or 0)
+
+                    vals.update({
+                        'x_axis': x_axis,
+                        'y_axis': y_axis,
+                    })
+
                 else:
-                    self._cr.execute(self.env[rec.model_name].
-                                     get_query(domain, rec.operation,
-                                               rec.measured_field_id))
+                    query, params, *_ = self.env[rec.model_name].get_query(
+                        domain, rec.operation, rec.measured_field_id
+                    )
+                    self._cr.execute(query, params)
                     records = self._cr.dictfetchall()
-                    magnitude = 0
+
                     total = records[0].get('value')
-                    while abs(total) >= 1000:
-                        magnitude += 1
-                        total /= 1000.0
-                    # add more suffixes if you need them
-                    val = '%.1f%s' % (
-                        total, ['', 'K', 'M', 'G', 'T', 'P'][magnitude])
+                    val = total
                     records[0]['value'] = val
                     vals.update(records[0])
             block_id.append(vals)
-        return block_id
-
+        return {
+            'block_id': block_id,
+            'is_admin': is_admin,
+        }
 
     def get_save_layout(self, act_id, grid_data_list):
         """Function fetch edited values while edit layout of the chart or tile

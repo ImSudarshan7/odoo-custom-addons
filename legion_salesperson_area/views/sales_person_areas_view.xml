@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="res_user_inherit" model="ir.ui.view">
+            <field name="name">res.users.inherit</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='login']" position="after">
+                    <separator/>
+                    <label for="sale_person_area" string="Selected Area"/>
+                    <h6>
+                        <field name="sale_person_area" widget="many2many_tags"/>
+                    </h6>
+                </xpath>
+
+            </field>
+        </record>
+
+
+        <!--inherit contacts menu action and create custom security group and called to contacts/action-->
+        <menuitem id="contacts.res_partner_menu_contacts"
+                  name="Contacts"
+                  action="contacts.action_contacts"
+                  parent="contacts.menu_contacts"
+                  groups="legion_salesperson_area.group_for_all_contacts"
+                  sequence="2"/>
+
+
+        <!--action for monday sales persons route -->
+        <record id="action_contacts_monday" model="ir.actions.act_window">
+            <field name="name">Sales Persons For Monday Route</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="domain">[('day_selection', '=', 'monday'), ('user_type','=', 'customer')]</field>
+            <!--            <field name="view_type">form</field>-->
+            <field name="view_mode">kanban,tree,form,activity</field>
+            <field name="search_view_id" ref="base.view_res_partner_filter"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a contact in your address Book
+                </p>
+                <p>
+                    Odoo helps you to easily track all activities related to a customer.
+                </p>
+            </field>
+        </record>
+
+        <!--menu for monday sales persons route if security group ill be true it ill visible-->
+        <menuitem id="sale_person_monday"
+                  name="Sales Persons Monday"
+                  action="action_contacts_monday"
+                  parent="contacts.menu_contacts"
+                  groups="legion_salesperson_area.group_sales_person_monday"
+                  sequence="1"/>
+
+        <!--action for tuesday sales persons route -->
+        <record id="action_contacts_tuesday" model="ir.actions.act_window">
+            <field name="name">Sales Persons For Tuesday Route</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="domain">[('day_selection', '=', 'tuesday'), ('user_type','=', 'customer')]</field>
+            <!--            <field name="view_type">form</field>-->
+            <field name="view_mode">kanban,tree,form,activity</field>
+            <field name="search_view_id" ref="base.view_res_partner_filter"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a contact in your address Book
+                </p>
+                <p>
+                    Odoo helps you to easily track all activities related to a customer.
+                </p>
+            </field>
+        </record>
+
+        <!--menu for tuesday sales persons route if security group ill be true it ill visible-->
+        <menuitem id="sale_person_tuesday"
+                  name="Sales Persons Tuesday"
+                  action="action_contacts_tuesday"
+                  parent="contacts.menu_contacts"
+                  groups="legion_salesperson_area.group_sales_person_tuesday"
+                  sequence="1"/>
+
+        <!--action for wednesday sales persons route -->
+        <record id="action_contacts_wednesday" model="ir.actions.act_window">
+            <field name="name">Sales Persons For Wednesday Route</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="domain">[('day_selection', '=', 'wednesday'), ('user_type','=', 'customer')]</field>
+            <!--            <field name="view_type">form</field>-->
+            <field name="view_mode">kanban,tree,form,activity</field>
+            <field name="search_view_id" ref="base.view_res_partner_filter"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a contact in your address Book
+                </p>
+                <p>
+                    Odoo helps you to easily track all activities related to a customer.
+                </p>
+            </field>
+        </record>
+
+        <!--menu for tuesday sales persons route if security group ill be true it ill visible-->
+        <menuitem id="sale_person_wednesday"
+                  name="Sales Persons Wednesday"
+                  action="action_contacts_wednesday"
+                  parent="contacts.menu_contacts"
+                  groups="legion_salesperson_area.group_sales_person_wednesday"
+                  sequence="1"/>
+
+        <!--action for Thursday sales persons route -->
+        <record id="action_contacts_thursday" model="ir.actions.act_window">
+            <field name="name">Sales Persons For Thursday Route</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="domain">[('day_selection', '=', 'thursday'), ('user_type','=', 'customer')]</field>
+            <!--            <field name="view_type">form</field>-->
+            <field name="view_mode">kanban,tree,form,activity</field>
+            <field name="search_view_id" ref="base.view_res_partner_filter"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a contact in your address Book
+                </p>
+                <p>
+                    Odoo helps you to easily track all activities related to a customer.
+                </p>
+            </field>
+        </record>
+
+        <!--menu for thursday sales persons route if security group ill be true it ill visible-->
+        <menuitem id="sale_person_thursday"
+                  name="Sales Persons Thursday"
+                  action="action_contacts_thursday"
+                  parent="contacts.menu_contacts"
+                  groups="legion_salesperson_area.group_sales_person_thursday"
+                  sequence="1"/>
+
+        <!--action for friday sales persons route -->
+        <record id="action_contacts_friday" model="ir.actions.act_window">
+            <field name="name">Sales Persons For Friday Route</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="domain">[('day_selection', '=', 'friday'), ('user_type','=', 'customer')]</field>
+            <field name="view_mode">kanban,tree,form,activity</field>
+            <field name="search_view_id" ref="base.view_res_partner_filter"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a contact in your address Book
+                </p>
+                <p>
+                    Odoo helps you to easily track all activities related to a customer.
+                </p>
+            </field>
+        </record>
+
+        <!--menu for friday sales persons route if security group ill be true it ill visible-->
+        <menuitem id="sale_person_friday"
+                  name="Sales Persons Friday"
+                  action="action_contacts_friday"
+                  parent="contacts.menu_contacts"
+                  groups="legion_salesperson_area.group_sales_person_friday"
+                  sequence="1"/>
+
+        <!--action for saturday sales persons route -->
+        <record id="action_contacts_saturday" model="ir.actions.act_window">
+            <field name="name">Sales Persons For Saturday Route</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="domain">[('day_selection', '=', 'saturday'), ('user_type','=', 'customer')]</field>
+            <!--            <field name="view_type">form</field>-->
+            <field name="view_mode">kanban,tree,form,activity</field>
+            <field name="search_view_id" ref="base.view_res_partner_filter"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a contact in your address Book
+                </p>
+                <p>
+                    Odoo helps you to easily track all activities related to a customer.
+                </p>
+            </field>
+        </record>
+
+        <!--menu for saturday sales persons route if security group ill be true it ill visible-->
+        <menuitem id="sale_person_saturday"
+                  name="Sales Persons Saturday"
+                  action="action_contacts_saturday"
+                  parent="contacts.menu_contacts"
+                  groups="legion_salesperson_area.group_sales_person_saturday"
+                  sequence="1"/>
+
+        <!--action for sunday sales persons route -->
+        <record id="action_contacts_sunday" model="ir.actions.act_window">
+            <field name="name">Sales Persons For Sunday Route</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="domain">[('day_selection', '=', 'sunday'), ('user_type','=', 'customer')]</field>
+            <!--            <field name="view_type">form</field>-->
+            <field name="view_mode">kanban,tree,form,activity</field>
+            <field name="search_view_id" ref="base.view_res_partner_filter"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a contact in your address Book
+                </p>
+                <p>
+                    Odoo helps you to easily track all activities related to a customer.
+                </p>
+            </field>
+        </record>
+
+        <!--menu for sunday sales persons route if security group ill be true it ill visible-->
+        <menuitem id="sale_person_sunday"
+                  name="Sales Persons Sunday"
+                  action="action_contacts_sunday"
+                  parent="contacts.menu_contacts"
+                  groups="legion_salesperson_area.group_sales_person_sunday"
+                  sequence="1"/>
+
+
+    </data>
+</odoo>

@@ -1,7 +1,0 @@
-<odoo>
-    <data>
-        <record model='res.groups' id='ab_global_autopoint.user'>
-            <field name="name">Global Autopoint User</field>
-        </record>
-    </data>
-</odoo>

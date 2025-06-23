@@ -1,15 +1,14 @@
 /** @odoo-module **/
 /* Copyright 2021 ITerra - Sergey Shebanin
- * Copyright 2023 Onestein - Anjeel Haria
  * License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl). */
 
 import LegacyControlPanel from "web.ControlPanel";
 import {ControlPanel} from "@web/search/control_panel/control_panel";
+import {SearchBar} from "@web/search/search_bar/search_bar";
 import {deviceContext} from "@web_responsive/components/ui_context.esm";
 import {patch} from "web.utils";
-import {Dropdown} from "@web/core/dropdown/dropdown";
 
-const {useState} = owl;
+const {useState, useContext} = owl.hooks;
 
 // In v15.0 there are two ControlPanel's. They are mostly the same and are used in legacy and new owl views.
 // We extend them two mostly the same way.
@@ -21,7 +20,7 @@ patch(LegacyControlPanel.prototype, "web_responsive.LegacyControlPanelMobile", {
         this.state = useState({
             mobileSearchMode: this.props.withBreadcrumbs ? "" : "quick",
         });
-        this.ui = deviceContext;
+        this.ui = useContext(deviceContext);
     },
     setMobileSearchMode(ev) {
         this.state.mobileSearchMode = ev.detail;
@@ -35,11 +34,12 @@ patch(ControlPanel.prototype, "web_responsive.ControlPanelMobile", {
         this.state = useState({
             mobileSearchMode: "",
         });
-        this.ui = deviceContext;
+        this.ui = useContext(deviceContext);
     },
     setMobileSearchMode(ev) {
         this.state.mobileSearchMode = ev.detail;
     },
 });
-
-Object.assign(LegacyControlPanel.components, {Dropdown});
+patch(SearchBar, "web_responsive.SearchBarMobile", {
+    template: "web_responsive.SearchBar",
+});

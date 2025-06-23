@@ -1,13 +1,11 @@
 # © 2016 Julien Coux (Camptocamp)
 # Copyright 2020 ForgeFlow S.L. (https://www.forgeflow.com)
-# Copyright 2024 Tecnativa - Carolina Fernandez
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 import operator
 from datetime import date, datetime
 
-from odoo import _, api, models
-from odoo.osv import expression
+from odoo import api, models
 from odoo.tools import float_is_zero
 
 
@@ -68,21 +66,16 @@ class OpenItemsReport(models.AbstractModel):
         only_posted_moves,
         company_id,
         date_from,
-        grouped_by,
-        analytic_account_ids,
-        no_analytic,
     ):
         domain = self._get_move_lines_domain_not_reconciled(
             company_id, account_ids, partner_ids, only_posted_moves, date_from
         )
-        # moved out to avoid too complex method error
-        domain = self.get_analytic_domain(domain, analytic_account_ids, no_analytic)
         ml_fields = self._get_ml_fields()
         move_lines = self.env["account.move.line"].search_read(
             domain=domain, fields=ml_fields
         )
         journals_ids = set()
-        group_ids = set()
+        partners_ids = set()
         partners_data = {}
         if date_at_object < date.today():
             (
@@ -126,45 +119,44 @@ class OpenItemsReport(models.AbstractModel):
             journals_ids.add(move_line["journal_id"][0])
             acc_id = move_line["account_id"][0]
             # Partners data
-            partner = self.env["res.partner"]
-            if move_line.get("partner_id"):
-                partner = self.env["res.partner"].browse(move_line["partner_id"][0])
-            if grouped_by == "salesperson":
-                user = partner.user_id
-                group_id = user.id or 0
-                group_name = user.name or _("Missing Salesperson")
+            if move_line["partner_id"]:
+                prt_id = move_line["partner_id"][0]
+                prt_name = move_line["partner_id"][1]
             else:
-                group_id = partner.id or 0
-                group_name = partner.name or _("Missing Partner")
-            if group_id not in group_ids:
-                partners_data.update({group_id: {"id": group_id, "name": group_name}})
-                group_ids.add(group_id)
+                prt_id = 0
+                prt_name = "Missing Partner"
+            if prt_id not in partners_ids:
+                partners_data.update({prt_id: {"id": prt_id, "name": prt_name}})
+                partners_ids.add(prt_id)
+
             # Move line update
+            original = 0
+
             if not float_is_zero(move_line["credit"], precision_digits=2):
                 original = move_line["credit"] * (-1)
-            else:
+            if not float_is_zero(move_line["debit"], precision_digits=2):
                 original = move_line["debit"]
 
             if move_line["ref"] == move_line["name"]:
-                ref_label = move_line["ref"] or ""
+                if move_line["ref"]:
+                    ref_label = move_line["ref"]
+                else:
+                    ref_label = ""
             elif not move_line["ref"]:
                 ref_label = move_line["name"]
             elif not move_line["name"]:
                 ref_label = move_line["ref"]
             else:
                 ref_label = move_line["ref"] + str(" - ") + move_line["name"]
-            if analytic_account_ids and move_line["analytic_account_id"]:
-                analytic_account_id = move_line["analytic_account_id"][1]
-            else:
-                analytic_account_id = False
+
             move_line.update(
                 {
                     "date": move_line["date"],
                     "date_maturity": move_line["date_maturity"]
                     and move_line["date_maturity"].strftime("%d/%m/%Y"),
                     "original": original,
-                    "partner_id": partner.id or 0,
-                    "partner_name": partner.name or "",
+                    "partner_id": prt_id,
+                    "partner_name": prt_name,
                     "ref_label": ref_label,
                     "journal_id": move_line["journal_id"][0],
                     "move_name": move_line["move_id"][1],
@@ -175,18 +167,17 @@ class OpenItemsReport(models.AbstractModel):
                     "currency_name": move_line["currency_id"][1]
                     if move_line["currency_id"]
                     else False,
-                    "analytic_account_id": analytic_account_id,
                 }
             )
 
             # Open Items Move Lines Data
             if acc_id not in open_items_move_lines_data.keys():
-                open_items_move_lines_data[acc_id] = {group_id: [move_line]}
+                open_items_move_lines_data[acc_id] = {prt_id: [move_line]}
             else:
-                if group_id not in open_items_move_lines_data[acc_id].keys():
-                    open_items_move_lines_data[acc_id][group_id] = [move_line]
+                if prt_id not in open_items_move_lines_data[acc_id].keys():
+                    open_items_move_lines_data[acc_id][prt_id] = [move_line]
                 else:
-                    open_items_move_lines_data[acc_id][group_id].append(move_line)
+                    open_items_move_lines_data[acc_id][prt_id].append(move_line)
         journals_data = self._get_journals_data(list(journals_ids))
         accounts_data = self._get_accounts_data(open_items_move_lines_data.keys())
         return (
@@ -238,9 +229,7 @@ class OpenItemsReport(models.AbstractModel):
                     move_lines = []
                     for move_line in open_items_move_lines_data[acc_id][prt_id]:
                         move_lines += [move_line]
-                    move_lines = sorted(
-                        move_lines, key=lambda k: (k["date"], k["partner_id"])
-                    )
+                    move_lines = sorted(move_lines, key=lambda k: (k["date"]))
                     new_open_items[acc_id][prt_id] = move_lines
         return new_open_items
 
@@ -255,9 +244,6 @@ class OpenItemsReport(models.AbstractModel):
         date_from = data["date_from"]
         only_posted_moves = data["only_posted_moves"]
         show_partner_details = data["show_partner_details"]
-        grouped_by = data["grouped_by"]
-        analytic_account_ids = data["analytic_account_ids"]
-        no_analytic = data["no_analytic"]
 
         (
             move_lines_data,
@@ -272,9 +258,6 @@ class OpenItemsReport(models.AbstractModel):
             only_posted_moves,
             company_id,
             date_from,
-            grouped_by,
-            analytic_account_ids,
-            no_analytic,
         )
 
         total_amount = self._calculate_amounts(open_items_move_lines_data)
@@ -297,12 +280,10 @@ class OpenItemsReport(models.AbstractModel):
             "accounts_data": accounts_data,
             "total_amount": total_amount,
             "Open_Items": open_items_move_lines_data,
-            "grouped_by": grouped_by,
         }
 
     def _get_ml_fields(self):
         return self.COMMON_ML_FIELDS + [
-            "analytic_account_id",
             "amount_residual",
             "reconciled",
             "currency_id",
@@ -312,32 +293,3 @@ class OpenItemsReport(models.AbstractModel):
             "debit",
             "amount_currency",
         ]
-
-    def get_analytic_domain(self, domain, analytic_account_ids, no_analytic):
-        if no_analytic:
-            domain = expression.AND(
-                [
-                    domain,
-                    [
-                        (
-                            "analytic_account_id",
-                            "=",
-                            False,
-                        )
-                    ],
-                ]
-            )
-        elif analytic_account_ids:
-            domain = expression.AND(
-                [
-                    domain,
-                    [
-                        (
-                            "analytic_account_id",
-                            "in",
-                            analytic_account_ids,
-                        )
-                    ],
-                ]
-            )
-        return domain

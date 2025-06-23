@@ -56,11 +56,6 @@ msgid "<b>Taxes summary</b>"
 msgstr "<b>Resumo de impostos</b>"
 
 #. module: account_financial_report
-#: model_terms:ir.ui.view,arch_db:account_financial_report.res_config_settings_view_form
-msgid "<span class=\"o_form_label\">Intervals configuration</span>"
-msgstr ""
-
-#. module: account_financial_report
 #: model_terms:ir.ui.view,arch_db:account_financial_report.aged_partner_balance_wizard
 #: model_terms:ir.ui.view,arch_db:account_financial_report.general_ledger_wizard
 #: model_terms:ir.ui.view,arch_db:account_financial_report.open_items_wizard
@@ -98,11 +93,6 @@ msgstr "Relatório Financeiro Abstrato XLSX"
 #, python-format
 msgid "Account"
 msgstr "Conta"
-
-#. module: account_financial_report
-#: model:ir.model.fields,field_description:account_financial_report.field_account_age_report_configuration_line__account_age_report_config_id
-msgid "Account Age Report Config"
-msgstr ""
 
 #. module: account_financial_report
 #: model:ir.model.fields,field_description:account_financial_report.field_aged_partner_balance_report_wizard__account_code_from
@@ -163,16 +153,11 @@ msgid "Additional Filtering"
 msgstr "Filtragem Adicional"
 
 #. module: account_financial_report
-#: model:ir.actions.act_window,name:account_financial_report.action_aged_partner_report_configuration
-msgid "Age Partner Report Configuration"
-msgstr ""
-
-#. module: account_financial_report
 #: model_terms:ir.ui.view,arch_db:account_financial_report.report_aged_partner_balance_move_lines
 msgid ""
 "Age ≤ 120\n"
-"                            d."
-msgstr ""
+"                        d."
+msgstr "Antiguidade ≤ 120 d."
 
 #. module: account_financial_report
 #: code:addons/account_financial_report/report/aged_partner_balance_xlsx.py:0
@@ -184,8 +169,8 @@ msgstr "Antiguidade ≤ 120 d."
 #: model_terms:ir.ui.view,arch_db:account_financial_report.report_aged_partner_balance_move_lines
 msgid ""
 "Age ≤ 30\n"
-"                            d."
-msgstr ""
+"                        d."
+msgstr "Antiguidade ≤ 30 d."
 
 #. module: account_financial_report
 #: code:addons/account_financial_report/report/aged_partner_balance_xlsx.py:0
@@ -197,8 +182,8 @@ msgstr "Antiguidade ≤ 30 d."
 #: model_terms:ir.ui.view,arch_db:account_financial_report.report_aged_partner_balance_move_lines
 msgid ""
 "Age ≤ 60\n"
-"                            d."
-msgstr ""
+"                        d."
+msgstr "Antiguidade ≤ 60 d."
 
 #. module: account_financial_report
 #: code:addons/account_financial_report/report/aged_partner_balance_xlsx.py:0
@@ -210,8 +195,8 @@ msgstr "Antiguidade ≤ 60 d."
 #: model_terms:ir.ui.view,arch_db:account_financial_report.report_aged_partner_balance_move_lines
 msgid ""
 "Age ≤ 90\n"
-"                            d."
-msgstr ""
+"                        d."
+msgstr "Antiguidade ≤ 90 d."
 
 #. module: account_financial_report
 #: code:addons/account_financial_report/report/aged_partner_balance_xlsx.py:0
@@ -279,12 +264,6 @@ msgid "All Posted Entries"
 msgstr "Todos os Lançamentos Publicados"
 
 #. module: account_financial_report
-#: model:ir.model.fields,field_description:account_financial_report.field_aged_partner_balance_report_wizard__all_analytic
-#: model:ir.model.fields,field_description:account_financial_report.field_open_items_report_wizard__all_analytic
-msgid "All analytic items"
-msgstr ""
-
-#. module: account_financial_report
 #: code:addons/account_financial_report/report/aged_partner_balance_xlsx.py:0
 #: code:addons/account_financial_report/report/general_ledger_xlsx.py:0
 #: code:addons/account_financial_report/report/open_items_xlsx.py:0
@@ -329,12 +308,8 @@ msgid "Amount cur."
 msgstr "Montante em moeda."
 
 #. module: account_financial_report
-#: code:addons/account_financial_report/report/aged_partner_balance_xlsx.py:0
 #: code:addons/account_financial_report/report/general_ledger_xlsx.py:0
-#: code:addons/account_financial_report/report/open_items_xlsx.py:0
-#: model_terms:ir.ui.view,arch_db:account_financial_report.report_aged_partner_balance_move_lines
 #: model_terms:ir.ui.view,arch_db:account_financial_report.report_general_ledger_lines
-#: model_terms:ir.ui.view,arch_db:account_financial_report.report_open_items_lines_header
 #, python-format
 msgid "Analytic Account"
 msgstr "Conta Analítica"
@@ -419,7 +394,6 @@ msgstr "Código"
 
 #. module: account_financial_report
 #: code:addons/account_financial_report/report/journal_ledger_xlsx.py:0
-#: model:ir.model.fields,field_description:account_financial_report.field_account_age_report_configuration__company_id
 #: model:ir.model.fields,field_description:account_financial_report.field_account_financial_report_abstract_wizard__company_id
 #: model:ir.model.fields,field_description:account_financial_report.field_aged_partner_balance_report_wizard__company_id
 #: model:ir.model.fields,field_description:account_financial_report.field_general_ledger_report_wizard__company_id
@@ -437,18 +411,6 @@ msgid "Compute accounts"
 msgstr "Calcular contas"
 
 #. module: account_financial_report
-#: model:ir.model,name:account_financial_report.model_res_config_settings
-msgid "Config Settings"
-msgstr ""
-
-#. module: account_financial_report
-#: model_terms:ir.ui.view,arch_db:account_financial_report.res_config_settings_view_form
-msgid "Configurations"
-msgstr ""
-
-#. module: account_financial_report
-#: model:ir.model.fields,field_description:account_financial_report.field_account_age_report_configuration__create_uid
-#: model:ir.model.fields,field_description:account_financial_report.field_account_age_report_configuration_line__create_uid
 #: model:ir.model.fields,field_description:account_financial_report.field_aged_partner_balance_report_wizard__create_uid
 #: model:ir.model.fields,field_description:account_financial_report.field_general_ledger_report_wizard__create_uid
 #: model:ir.model.fields,field_description:account_financial_report.field_journal_ledger_report_wizard__create_uid
@@ -459,8 +421,6 @@ msgid "Created by"
 msgstr "Criado por"
 
 #. module: account_financial_report
-#: model:ir.model.fields,field_description:account_financial_report.field_account_age_report_configuration__create_date
-#: model:ir.model.fields,field_description:account_financial_report.field_account_age_report_configuration_line__create_date
 #: model:ir.model.fields,field_description:account_financial_report.field_aged_partner_balance_report_wizard__create_date
 #: model:ir.model.fields,field_description:account_financial_report.field_general_ledger_report_wizard__create_date
 #: model:ir.model.fields,field_description:account_financial_report.field_journal_ledger_report_wizard__create_date
@@ -634,8 +594,6 @@ msgid "Detail Taxes"
 msgstr "Detalhe dos Impostos"
 
 #. module: account_financial_report
-#: model:ir.model.fields,field_description:account_financial_report.field_account_age_report_configuration__display_name
-#: model:ir.model.fields,field_description:account_financial_report.field_account_age_report_configuration_line__display_name
 #: model:ir.model.fields,field_description:account_financial_report.field_aged_partner_balance_report_wizard__display_name
 #: model:ir.model.fields,field_description:account_financial_report.field_general_ledger_report_wizard__display_name
 #: model:ir.model.fields,field_description:account_financial_report.field_journal_ledger_report_wizard__display_name
@@ -788,8 +746,6 @@ msgid "Filter accounts"
 msgstr "Filtrar contas"
 
 #. module: account_financial_report
-#: model:ir.model.fields,field_description:account_financial_report.field_aged_partner_balance_report_wizard__analytic_account_ids
-#: model:ir.model.fields,field_description:account_financial_report.field_open_items_report_wizard__analytic_account_ids
 #: model_terms:ir.ui.view,arch_db:account_financial_report.general_ledger_wizard
 msgid "Filter analytic accounts"
 msgstr "Filtrar contas analíticas"
@@ -914,14 +870,7 @@ msgstr "Agrupar movimentos por"
 
 #. module: account_financial_report
 #: model:ir.model.fields,field_description:account_financial_report.field_general_ledger_report_wizard__grouped_by
-#: model:ir.model.fields,field_description:account_financial_report.field_open_items_report_wizard__grouped_by
 msgid "Grouped By"
-msgstr ""
-
-#. module: account_financial_report
-#: model_terms:ir.ui.view,arch_db:account_financial_report.res_config_settings_view_form
-msgid ""
-"Here you can set the intervals that will appear on the Aged Partner Balance."
 msgstr ""
 
 #. module: account_financial_report
@@ -952,8 +901,6 @@ msgid "Hierarchy Levels to display"
 msgstr "Níveis Hierárquicos a exibir"
 
 #. module: account_financial_report
-#: model:ir.model.fields,field_description:account_financial_report.field_account_age_report_configuration__id
-#: model:ir.model.fields,field_description:account_financial_report.field_account_age_report_configuration_line__id
 #: model:ir.model.fields,field_description:account_financial_report.field_aged_partner_balance_report_wizard__id
 #: model:ir.model.fields,field_description:account_financial_report.field_general_ledger_report_wizard__id
 #: model:ir.model.fields,field_description:account_financial_report.field_journal_ledger_report_wizard__id
@@ -971,17 +918,6 @@ msgid ""
 msgstr ""
 "Se marcado, não serão exibidos os detalhes no relatório do Razão , apenas "
 "montantes centralizados por período."
-
-#. module: account_financial_report
-#: model:ir.model.fields,field_description:account_financial_report.field_account_age_report_configuration_line__inferior_limit
-msgid "Inferior Limit"
-msgstr ""
-
-#. module: account_financial_report
-#: code:addons/account_financial_report/models/account_age_report_configuration.py:0
-#, python-format
-msgid "Inferior Limit must be greather than zero"
-msgstr ""
 
 #. module: account_financial_report
 #: model_terms:ir.ui.view,arch_db:account_financial_report.report_trial_balance_lines_header
@@ -1006,12 +942,6 @@ msgstr ""
 #, python-format
 msgid "Initial balance"
 msgstr "Saldo Inicial"
-
-#. module: account_financial_report
-#: model:ir.model.fields,field_description:account_financial_report.field_aged_partner_balance_report_wizard__age_partner_config_id
-#: model:ir.model.fields,field_description:account_financial_report.field_res_config_settings__default_age_partner_config_id
-msgid "Intervals configuration"
-msgstr ""
 
 #. module: account_financial_report
 #: code:addons/account_financial_report/report/aged_partner_balance_xlsx.py:0
@@ -1079,8 +1009,6 @@ msgid "Journals"
 msgstr "Diários"
 
 #. module: account_financial_report
-#: model:ir.model.fields,field_description:account_financial_report.field_account_age_report_configuration____last_update
-#: model:ir.model.fields,field_description:account_financial_report.field_account_age_report_configuration_line____last_update
 #: model:ir.model.fields,field_description:account_financial_report.field_aged_partner_balance_report_wizard____last_update
 #: model:ir.model.fields,field_description:account_financial_report.field_general_ledger_report_wizard____last_update
 #: model:ir.model.fields,field_description:account_financial_report.field_journal_ledger_report_wizard____last_update
@@ -1091,8 +1019,6 @@ msgid "Last Modified on"
 msgstr "Última modificação em"
 
 #. module: account_financial_report
-#: model:ir.model.fields,field_description:account_financial_report.field_account_age_report_configuration__write_uid
-#: model:ir.model.fields,field_description:account_financial_report.field_account_age_report_configuration_line__write_uid
 #: model:ir.model.fields,field_description:account_financial_report.field_aged_partner_balance_report_wizard__write_uid
 #: model:ir.model.fields,field_description:account_financial_report.field_general_ledger_report_wizard__write_uid
 #: model:ir.model.fields,field_description:account_financial_report.field_journal_ledger_report_wizard__write_uid
@@ -1103,8 +1029,6 @@ msgid "Last Updated by"
 msgstr "Última atualização por"
 
 #. module: account_financial_report
-#: model:ir.model.fields,field_description:account_financial_report.field_account_age_report_configuration__write_date
-#: model:ir.model.fields,field_description:account_financial_report.field_account_age_report_configuration_line__write_date
 #: model:ir.model.fields,field_description:account_financial_report.field_aged_partner_balance_report_wizard__write_date
 #: model:ir.model.fields,field_description:account_financial_report.field_general_ledger_report_wizard__write_date
 #: model:ir.model.fields,field_description:account_financial_report.field_journal_ledger_report_wizard__write_date
@@ -1135,36 +1059,6 @@ msgid "Limit hierarchy levels"
 msgstr "Limite dos níveis hierárquicos"
 
 #. module: account_financial_report
-#: model:ir.model.fields,field_description:account_financial_report.field_account_age_report_configuration__line_ids
-msgid "Line"
-msgstr ""
-
-#. module: account_financial_report
-#: code:addons/account_financial_report/report/general_ledger.py:0
-#: code:addons/account_financial_report/report/open_items.py:0
-#: code:addons/account_financial_report/report/open_items_xlsx.py:0
-#: code:addons/account_financial_report/report/trial_balance.py:0
-#, python-format
-msgid "Missing Partner"
-msgstr ""
-
-#. module: account_financial_report
-#: code:addons/account_financial_report/report/open_items.py:0
-#, python-format
-msgid "Missing Salesperson"
-msgstr ""
-
-#. module: account_financial_report
-#: model:ir.model,name:account_financial_report.model_account_age_report_configuration_line
-msgid "Model to set interval lines for Age partner balance report"
-msgstr ""
-
-#. module: account_financial_report
-#: model:ir.model,name:account_financial_report.model_account_age_report_configuration
-msgid "Model to set intervals for Age partner balance report"
-msgstr ""
-
-#. module: account_financial_report
 #: model:ir.model.fields,field_description:account_financial_report.field_journal_ledger_report_wizard__move_target
 msgid "Move Target"
 msgstr "Alvo do Movimento"
@@ -1175,29 +1069,14 @@ msgid "Moves"
 msgstr "Movimentos"
 
 #. module: account_financial_report
-#: code:addons/account_financial_report/models/account_age_report_configuration.py:0
-#, python-format
-msgid "Must complete Configuration Lines"
-msgstr ""
-
-#. module: account_financial_report
 #: code:addons/account_financial_report/report/journal_ledger_xlsx.py:0
 #: code:addons/account_financial_report/report/vat_report_xlsx.py:0
-#: model:ir.model.fields,field_description:account_financial_report.field_account_age_report_configuration__name
-#: model:ir.model.fields,field_description:account_financial_report.field_account_age_report_configuration_line__name
 #: model_terms:ir.ui.view,arch_db:account_financial_report.report_journal_all_taxes
 #: model_terms:ir.ui.view,arch_db:account_financial_report.report_journal_ledger_journal_taxes
 #: model_terms:ir.ui.view,arch_db:account_financial_report.report_vat_report_base
 #, python-format
 msgid "Name"
 msgstr "Nome"
-
-#. module: account_financial_report
-#: code:addons/account_financial_report/models/account_age_report_configuration.py:0
-#: model:ir.model.constraint,message:account_financial_report.constraint_account_age_report_configuration_line_unique_name_config_combination
-#, python-format
-msgid "Name must be unique per report configuration"
-msgstr ""
 
 #. module: account_financial_report
 #: code:addons/account_financial_report/report/vat_report_xlsx.py:0
@@ -1251,11 +1130,6 @@ msgid "Not due"
 msgstr "Não vencido"
 
 #. module: account_financial_report
-#: model_terms:ir.ui.view,arch_db:account_financial_report.res_config_settings_view_form
-msgid "OCA Aged Report Configuration"
-msgstr ""
-
-#. module: account_financial_report
 #: model:ir.ui.menu,name:account_financial_report.menu_oca_reports
 msgid "OCA accounting reports"
 msgstr "Relatórios de contabilidade OCA"
@@ -1266,17 +1140,6 @@ msgstr "Relatórios de contabilidade OCA"
 #, python-format
 msgid "Older"
 msgstr "Mais Antigo"
-
-#. module: account_financial_report
-#: model:ir.model.fields,field_description:account_financial_report.field_open_items_report_wizard__only_analytic
-msgid "Only analytic items"
-msgstr ""
-
-#. module: account_financial_report
-#: model:ir.model.fields,field_description:account_financial_report.field_aged_partner_balance_report_wizard__no_analytic
-#: model:ir.model.fields,field_description:account_financial_report.field_open_items_report_wizard__no_analytic
-msgid "Only no analytic items"
-msgstr ""
 
 #. module: account_financial_report
 #: code:addons/account_financial_report/report/open_items_xlsx.py:0
@@ -1362,11 +1225,6 @@ msgid "Partner Initial balance"
 msgstr "Saldo inicial de Parceiro"
 
 #. module: account_financial_report
-#: model:ir.model.fields.selection,name:account_financial_report.selection__open_items_report_wizard__grouped_by__salesperson
-msgid "Partner Salesperson"
-msgstr ""
-
-#. module: account_financial_report
 #: code:addons/account_financial_report/report/aged_partner_balance_xlsx.py:0
 #, python-format
 msgid "Partner cumul aged balance"
@@ -1388,7 +1246,6 @@ msgstr ""
 
 #. module: account_financial_report
 #: model:ir.model.fields.selection,name:account_financial_report.selection__general_ledger_report_wizard__grouped_by__partners
-#: model:ir.model.fields.selection,name:account_financial_report.selection__open_items_report_wizard__grouped_by__partners
 msgid "Partners"
 msgstr ""
 
@@ -1447,20 +1304,20 @@ msgstr "Apenas Contas Recebíveis"
 
 #. module: account_financial_report
 #: model_terms:ir.ui.view,arch_db:account_financial_report.report_aged_partner_balance_move_lines
-msgid ""
-"Ref -\n"
-"                            Label"
-msgstr ""
-
-#. module: account_financial_report
 #: model_terms:ir.ui.view,arch_db:account_financial_report.report_general_ledger_lines
-#: model_terms:ir.ui.view,arch_db:account_financial_report.report_open_items_lines_header
 msgid ""
 "Ref -\n"
 "                        Label"
 msgstr ""
 "Ref -\n"
 "                        Rótulo"
+
+#. module: account_financial_report
+#: model_terms:ir.ui.view,arch_db:account_financial_report.report_open_items_lines_header
+msgid ""
+"Ref -\n"
+"                    Label"
+msgstr "Ref - Etiqueta"
 
 #. module: account_financial_report
 #: code:addons/account_financial_report/report/aged_partner_balance_xlsx.py:0
@@ -1885,6 +1742,7 @@ msgid "future"
 msgstr "futuro"
 
 #. module: account_financial_report
+#: model_terms:ir.ui.view,arch_db:account_financial_report.aged_partner_balance_wizard
 #: model_terms:ir.ui.view,arch_db:account_financial_report.general_ledger_wizard
 #: model_terms:ir.ui.view,arch_db:account_financial_report.journal_ledger_wizard
 #: model_terms:ir.ui.view,arch_db:account_financial_report.open_items_wizard
@@ -1932,31 +1790,6 @@ msgstr "largura: 38.92%;"
 #: model_terms:ir.ui.view,arch_db:account_financial_report.report_journal_ledger_journal_table_header
 msgid "width: 8.11%;"
 msgstr "largura: 8.11%;"
-
-#~ msgid ""
-#~ "Ref -\n"
-#~ "                    Label"
-#~ msgstr "Ref - Etiqueta"
-
-#~ msgid ""
-#~ "Age ≤ 120\n"
-#~ "                        d."
-#~ msgstr "Antiguidade ≤ 120 d."
-
-#~ msgid ""
-#~ "Age ≤ 30\n"
-#~ "                        d."
-#~ msgstr "Antiguidade ≤ 30 d."
-
-#~ msgid ""
-#~ "Age ≤ 60\n"
-#~ "                        d."
-#~ msgstr "Antiguidade ≤ 60 d."
-
-#~ msgid ""
-#~ "Age ≤ 90\n"
-#~ "                        d."
-#~ msgstr "Antiguidade ≤ 90 d."
 
 #~ msgid "Child Accounts"
 #~ msgstr "Contas Descendentes"

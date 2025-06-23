@@ -12,48 +12,54 @@ class DynamicDashboard(http.Controller):
     @http.route('/tile/details', type='json', auth='user')
     def tile_details(self, **kw):
         """Function to get tile details"""
-        tile_id = request.env['dashboard.block'].sudo().browse(
-            int(kw.get('id')))
+        tile_id = request.env['dashboard.block'].sudo().browse(int(kw.get('id')))
         if tile_id:
             domain = ast.literal_eval(tile_id.filter) if tile_id.filter else []
 
-            if tile_id.time_period:
+            # Only apply date filters if filter_bool is True
+            if tile_id.filter_bool:
+                start_date = kw.get('start_date')
+                end_date = kw.get('end_date')
+
+                if start_date and end_date:
+                    try:
+                        start_dt = datetime.strptime(start_date, "%Y-%m-%d")
+                        end_dt = datetime.strptime(end_date, "%Y-%m-%d") + timedelta(hours=23, minutes=59, seconds=59)
+                        domain.append(('create_date', '>=', start_dt))
+                        domain.append(('create_date', '<=', end_dt))
+                    except Exception as e:
+                        _logger.error(f"Date parse error: {e}")
+
+            # Else fallback to saved time_period field (optional)
+            elif tile_id.time_period:
                 today = datetime.today()
                 if tile_id.time_period == 'today':
-                    start_of_today = today.replace(hour=0, minute=0, second=0, microsecond=0)
-                    end_of_today = today.replace(hour=23, minute=59, second=59, microsecond=999999)
-
-                    domain.append(('create_date', '>=', start_of_today))
-                    domain.append(('create_date', '<=', end_of_today))
-
+                    start = today.replace(hour=0, minute=0, second=0, microsecond=0)
+                    end = today.replace(hour=23, minute=59, second=59, microsecond=999999)
+                    domain += [('create_date', '>=', start), ('create_date', '<=', end)]
                 elif tile_id.time_period == 'week':
-                    start_of_week = today - timedelta(days=today.weekday())
-                    start_of_week = start_of_week.replace(hour=0, minute=0, second=0, microsecond=0)
-                    end_of_week = start_of_week + timedelta(days=6, hours=23, minutes=59, seconds=59,
-                                                            microseconds=999999)
-
-                    domain.append(('create_date', '>=', start_of_week))
-                    domain.append(('create_date', '<=', end_of_week))
-
+                    start = today - timedelta(days=today.weekday())
+                    start = start.replace(hour=0, minute=0, second=0, microsecond=0)
+                    end = start + timedelta(days=6, hours=23, minutes=59, seconds=59)
+                    domain += [('create_date', '>=', start), ('create_date', '<=', end)]
                 elif tile_id.time_period == 'month':
-                    start_of_month = today.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
-                    next_month = today.replace(day=28) + timedelta(days=4)  # Ensures we move to next month
-                    end_of_month = next_month.replace(day=1, hour=23, minute=59, second=59,
-                                                      microsecond=999999) - timedelta(days=1)
-
-                    domain.append(('create_date', '>=', start_of_month))
-                    domain.append(('create_date', '<=', end_of_month))
-
+                    start = today.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+                    next_month = today.replace(day=28) + timedelta(days=4)
+                    end = next_month.replace(day=1, hour=23, minute=59, second=59, microsecond=999999) - timedelta(
+                        days=1)
+                    domain += [('create_date', '>=', start), ('create_date', '<=', end)]
                 elif tile_id.time_period == 'year':
-                    start_of_year = today.replace(month=1, day=1, hour=0, minute=0, second=0, microsecond=0)
-                    end_of_year = today.replace(month=12, day=31, hour=23, minute=59, second=59, microsecond=999999)
+                    start = today.replace(month=1, day=1, hour=0, minute=0, second=0, microsecond=0)
+                    end = today.replace(month=12, day=31, hour=23, minute=59, second=59, microsecond=999999)
+                    domain += [('create_date', '>=', start), ('create_date', '<=', end)]
 
-                    domain.append(('create_date', '>=', start_of_year))
-                    domain.append(('create_date', '<=', end_of_year))
+            _logger.info(f'============ DOMAIN: {domain} =====================')
+            return {
+                'model': tile_id.model_id.model,
+                'model_name': tile_id.model_id.name,
+                'filter': domain
+            }
 
-            _logger.info(f'============={domain}=====================')
-            return {'model': tile_id.model_id.model, 'filter': str(domain),
-                    'model_name': tile_id.model_id.name}
         return False
 
     @http.route('/custom_dashboard/search_input_chart', type='json',
