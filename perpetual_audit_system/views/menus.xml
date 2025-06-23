@@ -1,9 +1,0 @@
-<odoo>
-    <menuitem id="menu_perpetual_audit" name="Perpetual Audit" sequence="1" web_icon="perpetual_audit_system,static/description/icon.png"/>
-    <menuitem id="menu_audit_sessions" parent="menu_perpetual_audit" name="Audit Sessions" action="action_audit_session" sequence="20"/>
-    <menuitem id="menu_audit_items" parent="menu_perpetual_audit" name="Items" action="action_audit_item" sequence="20" groups="perpetual_audit_system.group_audit_admin"/>
-    <menuitem id="menu_audit_log" parent="menu_perpetual_audit" name="Audit Log" action="view_audit_log_action" sequence="20"/>
-
-    <menuitem id="menu_audit_configurations" parent="menu_perpetual_audit" name="Configurations" sequence="20" groups="perpetual_audit_system.group_audit_admin"/>
-    <menuitem id="menu_audit_locations" parent="menu_audit_configurations" name="Locations" action="action_audit_location" sequence="20" groups="perpetual_audit_system.group_audit_admin"/>
-</odoo>
