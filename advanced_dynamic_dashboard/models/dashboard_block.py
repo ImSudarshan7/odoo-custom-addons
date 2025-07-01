@@ -200,13 +200,13 @@ class DashboardBlock(models.Model):
 
             if rec.model_name:
                 if rec.type == 'graph':
-                    query, params, *_ = self.env[rec.model_name].get_query(
+                    query= self.env[rec.model_name].get_query(
                         domain,
                         rec.operation,
                         rec.measured_field_id,
                         group_by=rec.group_by_id if rec.type == 'graph' else None
                     )
-                    self._cr.execute(query, params)
+                    self._cr.execute(query)
 
                     records = self._cr.dictfetchall()
                     x_axis, y_axis = [], []
@@ -214,7 +214,7 @@ class DashboardBlock(models.Model):
                         name = record.get('name')
                         if isinstance(name, dict):
                             name = name.get(self._context.get('lang') or 'en_US', str(name))
-                        x_axis.append(name or 'N/A')  
+                        x_axis.append(name or 'N/A')
                         y_axis.append(record.get('value') or 0)
 
                     vals.update({
@@ -223,10 +223,10 @@ class DashboardBlock(models.Model):
                     })
 
                 else:
-                    query, params, *_ = self.env[rec.model_name].get_query(
+                    query = self.env[rec.model_name].get_query(
                         domain, rec.operation, rec.measured_field_id
                     )
-                    self._cr.execute(query, params)
+                    self._cr.execute(query)
                     records = self._cr.dictfetchall()
 
                     total = records[0].get('value')

@@ -17,9 +17,6 @@
         'data/data_view.xml',
         'views/dynamic_block_views.xml',
         'views/dashboard_views.xml',
-
-
-
     ],
     'assets': {
         'web.assets_backend': [

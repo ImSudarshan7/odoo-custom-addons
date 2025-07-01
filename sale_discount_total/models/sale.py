@@ -84,7 +84,7 @@ class SaleOrder(models.Model):
         invoice_vals.update({
             'discount_type': self.discount_type,
             'discount_rate': self.discount_rate,
-            'vehicle_num': self.vehicle_num.id,
+            # 'vehicle_num': self.vehicle_num.id,
         })
         return invoice_vals
 
